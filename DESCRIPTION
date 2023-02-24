@@ -1,0 +1,13 @@
+Package: tuhocr
+Type: Package
+Title: Functions for VN users 
+Version: 0.1.0
+Author: Duc Nguyen
+Maintainer: Duc Nguyen <tuhocr.com@gmail.com>
+Description: www.tuhocr.com
+License: Free for all
+Encoding: UTF-8
+LazyData: true
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
