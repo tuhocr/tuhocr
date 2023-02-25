@@ -7,6 +7,8 @@ Maintainer: Duc Nguyen <tuhocr.com@gmail.com>
 Imports: haven
 Description: Package này tập hợp các function giúp giải quyết công việc xử lý dữ liệu thường ngày. Để biết cách viết function, thân mời bạn tham gia khóa học R ở www.tuhocr.com giúp trang bị kiến thức R vững chắc.
 License: GPL (>= 3)
+URL: https://tuhocr.github.io/tuhocr
+BugReports: https://github.com/tuhocr/tuhocr/issues
 Encoding: UTF-8
 LazyData: true
 Suggests: 

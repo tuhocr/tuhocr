@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# pkgdown <img src="man/figures/logo.png" align="right" />
+# pkgdown <img src="man/figures/logo.png" align="right" alt="" width="120" />
 
 # tuhocr
 
@@ -10,50 +10,59 @@
 [![R-CMD-check](https://github.com/tuhocr/tuhocr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/tuhocr/tuhocr/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The goal of tuhocr is to …
+Package này tập hợp các function giúp giải quyết công việc xử lý dữ liệu
+thường ngày. Để biết cách viết function, thân mời bạn tham gia khóa học
+R ở www.tuhocr.com giúp trang bị kiến thức R vững chắc.
 
-## Installation
+## Hướng dẫn cài đặt
 
-You can install the development version of tuhocr from
-[GitHub](https://github.com/) with:
+Cài đặt package `tuhocr` theo cách sau:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("tuhocr/tuhocr")
 ```
 
-## Example
+Trước mắt trong package này có function `clean_spss()` giúp import file
+SPSS (.sav) vào trong R. Sau đó các cột có label sẽ được chuyển thành
+factor, cũng như làm sạch các thông tin liên quan đến SPSS để ta có data
+frame sạch.
 
-This is a basic example which shows you how to solve a common problem:
+``` r
+# Các bạn download các file SPSS (.sav) example này về.
+# http://spss.allenandunwin.com.s3-website-ap-southeast-2.amazonaws.com/data-files.html
+# Thực hiện dòng lệnh. Ta thu được data frame sạch để phân tích dữ liệu.
+```
 
 ``` r
 library(tuhocr)
-## basic example code
+data <- clean_spss("https://tuhocr.netlify.app/experim.sav")
+head(data[, 1:6])
+#>   id  sex age               group fost1 confid1
+#> 1  4 male  23 confidence building    50      15
+#> 2 10 male  21 confidence building    47      14
+#> 3  9 male  25        maths skills    44      12
+#> 4  3 male  30        maths skills    47      11
+#> 5 12 male  45 confidence building    46      16
+#> 6 11 male  22        maths skills    39      13
+str(data)
+#> 'data.frame':    30 obs. of  18 variables:
+#>  $ id      : num  4 10 9 3 12 11 6 5 8 13 ...
+#>  $ sex     : Factor w/ 2 levels "male","female": 1 1 1 1 1 1 1 1 1 1 ...
+#>  $ age     : num  23 21 25 30 45 22 22 26 23 21 ...
+#>  $ group   : Factor w/ 2 levels "maths skills",..: 2 2 1 1 2 1 2 1 2 1 ...
+#>  $ fost1   : num  50 47 44 47 46 39 32 44 40 47 ...
+#>  $ confid1 : num  15 14 12 11 16 13 21 17 22 20 ...
+#>  $ depress1: num  44 42 40 43 44 43 37 46 37 50 ...
+#>  $ fost2   : num  48 45 39 42 45 40 33 37 40 45 ...
+#>  $ confid2 : num  16 15 18 16 16 20 22 20 23 25 ...
+#>  $ depress2: num  44 42 40 43 45 42 36 47 37 48 ...
+#>  $ fost3   : num  45 44 36 41 43 39 32 32 40 46 ...
+#>  $ confid3 : num  14 18 19 20 20 22 23 26 26 27 ...
+#>  $ depress3: num  40 40 38 43 43 38 35 42 35 46 ...
+#>  $ exam    : num  52 55 58 60 58 62 59 70 60 70 ...
+#>  $ mah_1   : num  0.57 1.659 3.54 2.454 0.944 ...
+#>  $ DepT1gp2: Factor w/ 2 levels "not depressed",..: 1 1 1 1 1 1 1 2 1 2 ...
+#>  $ DepT2Gp2: Factor w/ 2 levels "not depressed",..: 1 1 1 1 2 1 1 2 1 2 ...
+#>  $ DepT3gp2: Factor w/ 2 levels "not depressed",..: 1 1 1 1 1 1 1 1 1 2 ...
 ```
-
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
-
-``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
-```
-
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this. You could also
-use GitHub Actions to re-render `README.Rmd` every time you push. An
-example workflow can be found here:
-<https://github.com/r-lib/actions/tree/v1/examples>.
-
-You can also embed plots, for example:
-
-<img src="man/figures/README-pressure-1.png" width="100%" />
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.

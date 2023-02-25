@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# pkgdown <img src="man/figures/logo.png" align="right" />
+# pkgdown <img src="man/figures/logo.png" align="right" alt="" width="120" />
 
 # tuhocr
 
@@ -21,38 +21,30 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/tuhocr/tuhocr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/tuhocr/tuhocr/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The goal of tuhocr is to ...
+Package này tập hợp các function giúp giải quyết công việc xử lý dữ liệu thường ngày. Để biết cách viết function, thân mời bạn tham gia khóa học R ở www.tuhocr.com giúp trang bị kiến thức R vững chắc.
 
-## Installation
+## Hướng dẫn cài đặt
 
-You can install the development version of tuhocr from [GitHub](https://github.com/) with:
+Cài đặt package `tuhocr` theo cách sau:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("tuhocr/tuhocr")
 ```
 
-## Example
+Trước mắt trong package này có function `clean_spss()` giúp import file SPSS (.sav) vào trong R. Sau đó các cột có label sẽ được chuyển thành factor, cũng như làm sạch các thông tin liên quan đến SPSS để ta có data frame sạch.
 
-This is a basic example which shows you how to solve a common problem:
-
-```{r example}
+```r
+# Các bạn download các file SPSS (.sav) example này về.
+# http://spss.allenandunwin.com.s3-website-ap-southeast-2.amazonaws.com/data-files.html
+# Thực hiện dòng lệnh. Ta thu được data frame sạch để phân tích dữ liệu.
+```
+```{r}
 library(tuhocr)
-## basic example code
+data <- clean_spss("https://tuhocr.netlify.app/experim.sav")
+head(data[, 1:6])
+str(data)
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
 
-```{r cars}
-summary(cars)
-```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. You could also use GitHub Actions to re-render `README.Rmd` every time you push. An example workflow can be found here: <https://github.com/r-lib/actions/tree/v1/examples>.
-
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
