@@ -2,8 +2,14 @@
 \alias{clean_spss}
 \title{Làm sạch file SPSS (.sav) thành data frame}
 \usage{
-clean_spss()
+clean_spss(input_data, ...)
 }
+
+\arguments{
+  \item{input_data}{ File SPSS (.sav) }
+  \item{...}{ Tham số này của lệnh haven::read_sav }
+}
+
 \description{
 Function này giúp import file SPSS (.sav) vào trong R. Sau đó các cột có label sẽ được chuyển thành factor, cũng như làm sạch các thông tin liên quan đến SPSS để ta có data frame sạch.
 

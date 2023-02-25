@@ -4,8 +4,9 @@ Title: Functions for VN users
 Version: 0.1.0
 Author: Duc Nguyen
 Maintainer: Duc Nguyen <tuhocr.com@gmail.com>
-Description: www.tuhocr.com
-License: Free for all
+Imports: haven
+Description: Package này là tập hợp các function giúp giải quyết các công việc xử lý dữ liệu thường ngày. Để biết cách viết function, thân mời bạn tham gia khóa học R ở www.tuhocr.com giúp trang bị kiến thức R căn bản vững chắc.
+License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Suggests: 
