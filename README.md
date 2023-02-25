@@ -10,7 +10,8 @@
 
 Package này tập hợp các function giúp giải quyết công việc xử lý dữ liệu
 thường ngày. Để biết cách viết function, thân mời bạn tham gia khóa học
-R ở www.tuhocr.com giúp trang bị kiến thức R vững chắc.
+R ở [www.tuhocr.com](www.tuhocr.com) giúp trang bị kiến thức R vững
+chắc.
 
 ## Hướng dẫn cài đặt
 
@@ -63,4 +64,16 @@ str(data)
 #>  $ DepT1gp2: Factor w/ 2 levels "not depressed",..: 1 1 1 1 1 1 1 2 1 2 ...
 #>  $ DepT2Gp2: Factor w/ 2 levels "not depressed",..: 1 1 1 1 2 1 1 2 1 2 ...
 #>  $ DepT3gp2: Factor w/ 2 levels "not depressed",..: 1 1 1 1 1 1 1 1 1 2 ...
+```
+
+## Liên hệ
+
+``` r
+Email: tuhocr.com@gmail.com
+
+Facebook: www.facebook.com/tuhocr
+
+Fanpage: www.facebook.com/Huong.Dan.Tu.Hoc.R
+
+Group: www.facebook.com/groups/tuhocr
 ```

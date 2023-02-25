@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/tuhocr/tuhocr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/tuhocr/tuhocr/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-Package này tập hợp các function giúp giải quyết công việc xử lý dữ liệu thường ngày. Để biết cách viết function, thân mời bạn tham gia khóa học R ở www.tuhocr.com giúp trang bị kiến thức R vững chắc.
+Package này tập hợp các function giúp giải quyết công việc xử lý dữ liệu thường ngày. Để biết cách viết function, thân mời bạn tham gia khóa học R ở [www.tuhocr.com](www.tuhocr.com) giúp trang bị kiến thức R vững chắc.
 
 ## Hướng dẫn cài đặt
 
@@ -43,6 +43,25 @@ data <- clean_spss("https://tuhocr.netlify.app/experim.sav")
 head(data[, 1:6])
 str(data)
 ```
+
+## Liên hệ
+
+```r
+Email: tuhocr.com@gmail.com
+
+Facebook: www.facebook.com/tuhocr
+
+Fanpage: www.facebook.com/Huong.Dan.Tu.Hoc.R
+
+Group: www.facebook.com/groups/tuhocr
+```
+
+
+
+
+
+
+
 
 
 
