@@ -10,8 +10,8 @@
 
 Package này tập hợp các function giúp giải quyết công việc xử lý dữ liệu
 thường ngày. Để biết cách viết function, thân mời bạn tham gia khóa học
-R ở [www.tuhocr.com](www.tuhocr.com) giúp trang bị kiến thức R vững
-chắc.
+R ở <span style="color: blue">**`www.tuhocr.com`**</span> giúp trang bị
+kiến thức R vững chắc.
 
 ## Hướng dẫn cài đặt
 
