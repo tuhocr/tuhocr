@@ -10,3 +10,7 @@
 *.pygstyle
 latex/test
 homework/.cache
+docs
+.Rdata
+.httr-oauth
+.DS_Store
