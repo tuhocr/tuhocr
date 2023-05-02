@@ -10,8 +10,7 @@
 
 Package này tập hợp các function giúp giải quyết công việc xử lý dữ liệu
 thường ngày. Để biết cách viết function, thân mời bạn tham gia khóa học
-R ở <span style="color: blue">**`www.tuhocr.com`**</span> giúp trang bị
-kiến thức R vững chắc.
+R ở **`www.tuhocr.com`** giúp trang bị kiến thức R vững chắc.
 
 ## Hướng dẫn cài đặt
 
@@ -65,6 +64,15 @@ str(data)
 #>  $ DepT2Gp2: Factor w/ 2 levels "not depressed",..: 1 1 1 1 2 1 1 2 1 2 ...
 #>  $ DepT3gp2: Factor w/ 2 levels "not depressed",..: 1 1 1 1 1 1 1 1 1 2 ...
 ```
+
+## Làm bài tập R
+
+Mình định kỳ có upload các bài tập củng cố kiến thức R ở chuyên mục [Bài
+Tập R](https://www.tuhocr.com/r-courses/code-base-for-r). Các file này
+chạy online trên server RStudio (Shiny app) tuy nhiên đôi khi sẽ bị
+chậm, vì vậy bạn có thể render local trên máy tính bằng dòng lệnh
+`learnr::run_tutorial(name = "hack1", package = "tuhocr")` với `hack1`
+là codename tương ứng của từng bài tập.
 
 ## Liên hệ
 

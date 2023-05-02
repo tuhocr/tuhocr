@@ -44,6 +44,10 @@ head(data[, 1:6])
 str(data)
 ```
 
+## Làm bài tập R 
+
+Mình định kỳ có upload các bài tập củng cố kiến thức R ở chuyên mục [Bài Tập R](https://www.tuhocr.com/r-courses/code-base-for-r). Các file này chạy online trên server RStudio (Shiny app) tuy nhiên đôi khi sẽ bị chậm, vì vậy bạn có thể render local trên máy tính bằng dòng lệnh `learnr::run_tutorial(name = "hack1", package = "tuhocr")` với `hack1` là codename tương ứng của từng bài tập.
+
 ## Liên hệ
 
 ```r
