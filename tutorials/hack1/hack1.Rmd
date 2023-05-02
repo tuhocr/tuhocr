@@ -1,0 +1,179 @@
+---
+title: "Tình huống hack não | Tập 1"
+author: "Biên soạn: Duc Nguyen | tuhocr.com"
+output: learnr::tutorial
+runtime: shiny_prerendered
+date: "Thực hiện: May 02, 2023"
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Làm việc với vector
+
+### Tìm vị trí của các thành phần trong vector ký tự căn cứ trên chiều dài ký tự 
+
+Bạn có vector x chứa các thành phần như sau:
+
+`x <- c("882C", "8834C", "991C", "87C", "144A", "44566", "82C", "883")`
+
+<span style = "color: red">**Câu hỏi: Tìm vị trí của những thành phần chứa 3 ký tự trong vector x, và trích xuất những thành phần đó ra.**</span>
+
+`Dễ thấy vị trí đó là: 4, 7 và 8, tương ứng "87C" "82C" "883"`
+
+Ý nghĩa của bài tập này là khi bạn có một vector ký tự chứa rất nhiều thành phần trong đó, nếu dò thủ công là không thể, dùng R để trích xuất ra sẽ chính xác và nhanh hơn.
+
+<span style = "color: blue">**Bạn viết code ở đây**</span>
+
+```{r b1, exercise=TRUE, exercise.lines = 10}
+x <- c("882C", "8834C", "991C", "87C", "144A", "44566", "82C", "883")
+```
+
+> Thực tế có *n* cách để giải một tình huống nào đó trong R. Vậy nên bạn code làm sao để thu được kết quả đề bài là OK. Theo thời gian, bạn sẽ dần tối ưu đoạn code sao cho gọn và thông minh.
+
+### Đáp án
+
+<details><summary><mark>**Show/Hide**</mark></summary>
+
+<span style = "color: green">**Cách 1: Sử dụng lệnh `nchar()` để đếm số lượng ký tự trong từng thành phần ở vector `x`, sau đó gán vào vector `y` để làm names cho vector `x`, sau thì chúng ta sẽ subset những thành phần trong vector `x` có names là 3 ký tự (thông qua lệnh `which()`).**</span>
+
+```{r b1-solution-1, exercise=TRUE}
+x <- c("882C", "8834C", "991C", "87C", "144A", "44569", "82C", "883")
+y <- nchar(x)
+names(x) <- y
+which(y == 3) # vị trí của các thành phần có 3 ký tự trên vector x
+x[which(y == 3)]
+```
+
+<span style = "color: green">**Cách 2: Subset bằng logical vector**</span>
+
+```{r b1-solution-2, exercise=TRUE}
+x <- c("882C", "8834C", "991C", "87C", "144A", "44569", "82C", "883")
+# tạo ra vector logical so sánh với 3 ký tự
+logical_vec <- nchar(x) == 3
+logical_vec
+# subset các giá trị theo vector logical ở trên.
+x[logical_vec]
+```
+
+</details>
+
+## Làm việc với matrix
+
+### Thay đổi giá trị ở đường chéo phụ trong matrix
+
+Bình thường để thay đổi giá trị đường chéo chính (primary diagonal) trong matrix ở R thì ta dùng lệnh `diag()`. Tuy nhiên bạn muốn thay đổi đường chéo phụ (secondary diagonal) thì làm như thế nào, vì R không cung cấp lệnh được code sẵn cho việc đó.
+
+Đây cũng là idea cho việc khi chúng ta học các lệnh trong R thì không phải lúc nào cũng sẽ có các dòng lệnh "đối xứng" nhau cho các tình huống thường gặp, mà ta cần xuất phát từ các lệnh cơ bản để giải quyết bài toán cụ thể.
+
+Ta có ma trận `x`
+
+```{r matrix-1, echo=FALSE, eval=TRUE}
+x <- matrix(1:9, 3, 3)
+x
+```
+
+<span style = "color: red">**Câu hỏi: Làm sao để tạo thành ma trận x có đường chéo phụ là các số 0 như sau.**</span>
+
+```{r matrix-2, echo=FALSE, eval=TRUE}
+# 1 SUBSET THEO diag() cách 1
+x <- matrix(1:9, 3, 3)
+diag(x[, nrow(x):1]) <- c(0, 0, 0)
+x
+```
+
+<span style = "color: blue">**Bạn viết code ở đây**</span>
+
+```{r matrix-3, exercise=TRUE, exercise.lines = 10}
+x <- matrix(1:9, 3, 3)
+```
+
+### Đáp án
+
+<details><summary><mark>**Show/Hide**</mark></summary>
+
+Chi tiết lời giải trong chuyên đề Coding in R `https://www.tuhocr.com/r-courses/coding-in-r`, ở đây mình đưa đoạn code để thu được câu trả lời nhé.
+
+<span style = "color: green">**Cách 1: Subset theo `diag()`**</span>
+
+```{r matrix-solution-1, exercise=TRUE}
+x <- matrix(1:9, 3, 3)
+diag(x[, nrow(x):1]) <- c(0, 0, 0)
+x
+```
+
+<span style = "color: green">**Cách 2: Subset theo `diag()` kỹ hơn**</span>
+
+```{r matrix-solution-2, exercise=TRUE}
+x <- matrix(1:9, 3, 3)
+diag(x[1:nrow(x), ncol(x):1]) <- c(0, 0, 0)
+x
+```
+
+<span style = "color: green">**Cách 3: Subset theo giá trị logical**</span>
+
+```{r matrix-solution-3, exercise=TRUE}
+x <- matrix(1:9, 3, 3)
+x[row(x) + col(x) == nrow(x) + 1] <- c(0, 0, 0)
+x
+```
+
+<span style = "color: green">**Cách 4: Subset theo vị trí index**</span>
+
+```{r matrix-solution-4, exercise=TRUE}
+x <- matrix(1:9, 3, 3)
+x[seq(to = nrow(x), by = 1 - nrow(x), length = nrow(x))] <- c(0, 0, 0)
+x
+```
+
+<span style = "color: green">**Cách 5: Subset theo matrix**</span>
+
+```{r matrix-solution-5, exercise=TRUE}
+x <- matrix(1:9, 3, 3)
+x[cbind(1:nrow(x), ncol(x):1)] <- c(0, 0, 0)
+x
+```
+
+## Làm việc với list
+
+### Loại bỏ giá trị `NULL` trong list 
+
+Giả sử bạn có list `a` chứa 2 giá trị `NULL` như trong ví dụ này.
+
+```{r list-1, echo=TRUE, eval=TRUE}
+a <- list(1:5, "xyz", NULL, NULL, c("990A", "1234A"))
+a
+```
+
+<span style = "color: red">**Câu hỏi làm sao để loại bỏ giá trị `NULL` trong list `a`, để trở thành dạng clean list như vầy.**</span>
+
+```{r list-2, echo=FALSE, eval=TRUE}
+a <- list(1:5, "xyz", NULL, NULL, c("990A", "1234A"))
+a[lengths(a) != 0]
+```
+
+<span style = "color: blue">**Bạn viết code ở đây**</span>
+
+```{r list-3, exercise=TRUE, exercise.lines = 10}
+a <- list(1:5, "xyz", NULL, NULL, c("990A", "1234A"))
+```
+
+
+### Đáp án
+
+<details><summary><mark>**Show/Hide**</mark></summary>
+
+```{r list-solution-1, exercise=TRUE}
+a <- list(1:5, "xyz", NULL, NULL, c("990A", "1234A"))
+a[lengths(a) != 0]
+```
+
+## Thảo luận về bài tập
+
+<span style = "color: blue">**Bạn có thể tham gia group Tự Học R `https://www.facebook.com/groups/tuhocr/posts/906550257084353/` để thảo luận về bài tập này nha.**</span> 
+
+<span style = "color: blue">**Mình là Đức Nguyễn, chuyên đào tạo kỹ năng R để xử lý dữ liệu, nếu bạn có nhu cầu được training kỹ năng này thì hãy tham gia khóa học `www.tuhocr.com` nhé. Cảm ơn bạn rất nhiều!**</span>
+
+<img src="images/tuhocr.png"  width=20% height=20%>
