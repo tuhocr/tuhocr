@@ -7,7 +7,7 @@ clean_spss(input_data, ...)
 
 \arguments{
   \item{input_data}{ File SPSS (.sav) }
-  \item{...}{ Tham số này của lệnh haven::read_sav }
+  \item{...}{ Tham số này của lệnh haven::read_sav() }
 }
 
 \description{
