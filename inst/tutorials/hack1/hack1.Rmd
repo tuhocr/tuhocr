@@ -177,3 +177,7 @@ a[lengths(a) != 0]
 <span style = "color: blue">**Mình là Đức Nguyễn, chuyên đào tạo kỹ năng R để xử lý dữ liệu, nếu bạn có nhu cầu được training kỹ năng này thì hãy tham gia khóa học `www.tuhocr.com` nhé. Cảm ơn bạn rất nhiều!**</span>
 
 <img src="images/tuhocr.png"  width=20% height=20%>
+
+### Render bài tập offline
+
+<span style = "color: green">**Mình định kỳ có upload các bài tập củng cố kiến thức R ở chuyên mục [Bài Tập R](https://www.tuhocr.com/r-courses/code-base-for-r). Các file này chạy online trên server RStudio (Shiny app) tuy nhiên đôi khi sẽ bị chậm, vì vậy bạn có thể cài package [`tuhocr`](https://tuhocr.github.io/#l%C3%A0m-b%C3%A0i-t%E1%BA%ADp-r) sau đó render local trên máy tính bằng dòng lệnh `learnr::run_tutorial(name = "hack1", package = "tuhocr")` với `hack1` là codename tương ứng của từng bài tập.**</span>
