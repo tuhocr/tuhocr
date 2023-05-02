@@ -12,8 +12,8 @@ Package này tập hợp các function giúp giải quyết công việc xử l�
 \tabular{ll}{
 Package: \tab tuhocr\cr
 Type: \tab Package\cr
-Version: \tab 0.1.0\cr
-Date: \tab 2023-02-25\cr
+Version: \tab 0.1.1\cr
+Date: \tab 2023-05-03\cr
 License: \tab GPL (>= 3)\cr
 }
 }
