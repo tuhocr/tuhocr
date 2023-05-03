@@ -1,0 +1,124 @@
+---
+title: "Tình huống hack não | Tập 2"
+author: "Biên soạn: Duc Nguyen | tuhocr.com"
+output: learnr::tutorial
+runtime: shiny_prerendered
+date: "Thực hiện: May 03, 2023"
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Làm việc với data frame
+
+### <span style = "color: blue">Lọc danh sách các loại cây trồng từ danh sách tổng hợp</span>
+
+**Bạn có 1 file [`crop_full.rds`](https://studyr.netlify.app/faostat/data_raw/crop_production_all_data.rds) (13.9 MB) chứa dữ liệu về nông nghiệp của FAO, gồm 3.7 triệu dòng. Bạn sử dụng package `FAOSTAT` để download về nhé. Cách thức download file này được mình trình bày ở BÀI 2: CÁCH TẢI DATASET TỪ FAOSTAT trong playlist [HỌC R SIÊU NHANH](https://www.youtube.com/playlist?list=PLCKFKYBfLgPV07MhYMoOMlazOSS7KwKuA).**
+
+**Cấu trúc file này như sau: [crop_full.html](https://studyr.netlify.app/faostat/crop_full.html)**
+
+<span style = "color: red">**Trong file này thì cột `item` là tên các loại nông sản. Bạn hãy tìm cách trích xuất, làm sạch dữ liệu, sắp xếp làm sao đó để tách ra thành [danh sách các loại cây trồng] nhé.**</span> 
+
+<mark style="background-color: #FFFF00">**Lưu ý là câu hỏi này hoàn toàn khác với câu hỏi từ [Bài tập data cleaning](https://studyr.netlify.app/faostat/data-cleaning.html) cũng sử dụng cùng bộ dataset này.**</mark> 
+
+**Ý nghĩa của bài tập này là tình huống lọc dữ liệu ở dạng long (dữ liệu theo chiều dọc). Bạn cần trải dữ liệu ra dạng wide (dữ liệu theo chiều ngang) để thuận tiện trích xuất thông tin.**
+
+### <span style = "color: blue">Làm rõ độ khó của bài tập</span>
+
+**Đây là bài tập làm trên file dataset thực tế với dữ liệu lớn do đó bạn cần hình dung bản chất câu hỏi/logic bài tập này như thế nào trước khi tìm cách giải bài tập. Cụ thể là các loại nông sản ở cột `item` gồm những loại nông sản thuộc nhóm trồng trọt và chăn nuôi, với đặc trưng là tương ứng từng `item` sẽ có các `element` chứa thông tin liên quan.** 
+
+**Ví dụ `item == "Rice"` <mark>(thuộc nhóm trồng trọt)</mark> sẽ đi kèm với các `element` là biến `production`, `area_harvested`, và đôi khi là `yield`, còn `item == "Chickens"` (thuộc nhóm chăn nuôi) chỉ có `element` tương ứng là `stocks`.**
+
+**Danh sách tổng số lượng nông sản trong dataset của FAOSTAT.**
+
+```{r, message=FALSE, warning=FALSE}
+data_folder <- "data"
+dir.create(data_folder)
+utils::download.file(url = "https://studyr.netlify.app/faostat/data_raw/crop_production_all_data.rds",
+                     destfile = "data/crop_production_all_data.rds")
+crop_full <- readRDS(file = "data/crop_production_all_data.rds")
+```
+
+<span style = "color: green">• **Kích thước của dataset**</span>
+
+```{r}
+dim(crop_full)
+```
+
+<span style = "color: green">• **Tên các cột trong dataset**</span>
+
+```{r}
+names(crop_full)
+```
+
+<span style = "color: green">• **Tổng số lượng nông sản trong dataset**</span>
+
+```{r}
+length(unique(crop_full$item))
+```
+
+<span style = "color: green">• **Danh sách toàn bộ các loại nông sản**</span>
+
+```{r}
+unique(crop_full$item)
+```
+
+<span style = "color: red">• **<mark style="background-color: #FFFF00">Danh sách các loại cây trồng lúc này chỉ còn 172 loại. Đây chính là câu trả lời bạn cần code.</mark>**</span>
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, eval=TRUE}
+ok <- as.data.frame(table(crop_full$item, crop_full$element))
+ok_1 <- ok |> subset(Freq != 0)
+ok_2 <- reshape(data = ok_1,
+                idvar = c("Var1"),
+                v.names = "Freq",
+                timevar = "Var2",
+                direction = "wide")
+ok_2[!is.na(ok_2$Freq.area_harvested) & !is.na(ok_2$Freq.production), ] -> ok_3
+as.character(ok_3$Var1) -> crop_item
+crop_item
+```
+
+## Làm bài tập
+
+<span style = "color: blue">**Khi viết code online sẽ hơi bị chậm/lag. Bạn có thể thực hiện bài tập này offline theo [hướng dẫn ở đây.](https://tuhocr.github.io/tuhocr/#l%C3%A0m-b%C3%A0i-t%E1%BA%ADp-r)**</span>
+
+```{r b1, exercise=TRUE, exercise.lines = 10}
+crop_full <- readRDS(file = "data/crop_production_all_data.rds")
+
+```
+
+## Đáp án
+
+<details><summary><mark>**Show/Hide**</mark></summary>
+
+<span style = "color: green">**Có nhiều cách để giải bài tập này, ở đây mình tiếp cận theo cách dùng lệnh `table()` để lọc ra các tổ hợp giữa `item` và `element` sau đó `reshape()` qua dạng wide rồi lọc dữ liệu theo tính logic của câu chuyện như đã phân tích ở phần độ khó của bài tập này.**</span>
+
+```{r b1-solution-1, exercise=TRUE}
+crop_full <- readRDS(file = "data/crop_production_all_data.rds")
+ok <- as.data.frame(table(crop_full$item, crop_full$element))
+ok_1 <- ok |> subset(Freq != 0)
+ok_2 <- reshape(data = ok_1,
+                idvar = c("Var1"),
+                v.names = "Freq",
+                timevar = "Var2",
+                direction = "wide")
+ok_2[!is.na(ok_2$Freq.area_harvested) & !is.na(ok_2$Freq.production), ] -> ok_3
+as.character(ok_3$Var1) -> crop_item
+crop_item
+```
+
+</details>
+
+## Thảo luận về bài tập
+
+<span style = "color: blue">**Bạn có thể tham gia group Tự Học R `https://www.facebook.com/groups/tuhocr/posts/906859167053462/` để thảo luận về bài tập này nha.**</span> 
+
+<span style = "color: blue">**Mình là Đức Nguyễn, chuyên đào tạo kỹ năng R để xử lý dữ liệu, nếu bạn có nhu cầu được training kỹ năng này thì hãy tham gia khóa học `www.tuhocr.com` nhé. Cảm ơn bạn rất nhiều!**</span>
+
+<img src="images/tuhocr.png"  width=20% height=20%>
+
+### Render bài tập offline
+
+<span style = "color: green">**Mình định kỳ có upload các bài tập củng cố kiến thức R ở chuyên mục [Bài Tập R](https://www.tuhocr.com/r-courses/code-base-for-r). Các file này chạy online trên server RStudio (Shiny app) tuy nhiên đôi khi sẽ bị chậm, vì vậy bạn có thể cài package [`tuhocr`](https://tuhocr.github.io/#l%C3%A0m-b%C3%A0i-t%E1%BA%ADp-r) sau đó render local trên máy tính bằng dòng lệnh `learnr::run_tutorial(name = "hack1", package = "tuhocr")` với `hack1` là codename tương ứng của từng bài tập.**</span>
