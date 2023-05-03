@@ -34,10 +34,6 @@ knitr::opts_chunk$set(echo = FALSE)
 **Danh sách tổng số lượng nông sản trong dataset của FAOSTAT.**
 
 ```{r, message=FALSE, warning=FALSE}
-data_folder <- "data"
-dir.create(data_folder)
-utils::download.file(url = "https://studyr.netlify.app/faostat/data_raw/crop_production_all_data.rds",
-                     destfile = "data/crop_production_all_data.rds")
 crop_full <- readRDS(file = "data/crop_production_all_data.rds")
 ```
 
