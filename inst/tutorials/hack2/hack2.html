@@ -649,13 +649,16 @@ code.</mark></strong></span></p>
 </div>
 <div id="section-làm-bài-tập" class="section level2">
 <h2>Làm bài tập</h2>
-<p><span style="color: blue"><strong>Khi viết code online sẽ hơi bị
-chậm/lag. Bạn có thể thực hiện bài tập này offline theo <a
+<p><span style="color: blue"><strong>Bạn thực hiện bài tập này offline
+theo <a
 href="https://tuhocr.github.io/tuhocr/#l%C3%A0m-b%C3%A0i-t%E1%BA%ADp-r">hướng
-dẫn ở đây.</a></strong></span></p>
+dẫn ở đây nhé.</a></strong></span></p>
 <div class="tutorial-exercise" data-label="b1" data-completion="1"
 data-diagnostics="1" data-startover="1" data-lines="10">
-<pre class="text"><code>crop_full &lt;- readRDS(file = &quot;data/crop_production_all_data.rds&quot;)</code></pre>
+<pre class="text"><code># Đã import sẵn dataset crop_full.
+# crop_full &lt;- readRDS(file = &quot;crop_production_all_data.rds&quot;)
+
+str(crop_full)</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"<span data-i18n=\"text.enginecap\" data-i18n-opts=\"{&quot;engine&quot;:&quot;R&quot;}\">R Code<\/span>"}</script>
 </div>
 </div>
@@ -674,7 +677,8 @@ này.</strong></span></p>
 <div class="tutorial-exercise" data-label="b1-solution-1"
 data-completion="1" data-diagnostics="1" data-startover="1"
 data-lines="0">
-<pre class="text"><code>crop_full &lt;- readRDS(file = &quot;data/crop_production_all_data.rds&quot;)
+<pre class="text"><code># Đã import sẵn dataset crop_full.
+# crop_full &lt;- readRDS(file = &quot;crop_production_all_data.rds&quot;)
 ok &lt;- as.data.frame(table(crop_full$item, crop_full$element))
 ok_1 &lt;- ok |&gt; subset(Freq != 0)
 ok_2 &lt;- reshape(data = ok_1,
@@ -714,6 +718,12 @@ tập.</strong></span>
 <script type="application/shiny-prerendered" data-context="server-start">
 library(learnr)
 knitr::opts_chunk$set(echo = FALSE)
+
+if (!file.exists("crop_production_all_data.rds")) {
+  download.file(url = "https://studyr.netlify.app/faostat/data_raw/crop_production_all_data.rds",
+                destfile = "crop_production_all_data.rds", mode = "wb")
+}
+crop_full <- readRDS(file = "crop_production_all_data.rds")
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
@@ -746,16 +756,20 @@ output$`tutorial-exercise-b1-output` <- renderUI({
 
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::store_exercise_cache(structure(list(label = "b1", global_setup = structure(c("library(learnr)", 
-"knitr::opts_chunk$set(echo = FALSE)"), chunk_opts = list(label = "setup", 
-    include = FALSE)), setup = NULL, chunks = list(list(label = "b1", 
-    code = "crop_full <- readRDS(file = \"data/crop_production_all_data.rds\")\n", 
-    opts = list(label = "\"b1\"", exercise = "TRUE", exercise.lines = "10"), 
-    engine = "r")), code_check = NULL, error_check = NULL, check = NULL, 
-    solution = NULL, tests = NULL, options = list(eval = FALSE, 
-        echo = TRUE, results = "markup", tidy = FALSE, tidy.opts = NULL, 
-        collapse = FALSE, prompt = FALSE, comment = NA, highlight = FALSE, 
-        size = "normalsize", background = "#F7F7F7", strip.white = TRUE, 
-        cache = 0, cache.path = "hack2_cache/html/", cache.vars = NULL, 
+"knitr::opts_chunk$set(echo = FALSE)", "", "if (!file.exists(\"crop_production_all_data.rds\")) {", 
+"  download.file(url = \"https://studyr.netlify.app/faostat/data_raw/crop_production_all_data.rds\",", 
+"                destfile = \"crop_production_all_data.rds\", mode = \"wb\")", 
+"}", "crop_full <- readRDS(file = \"crop_production_all_data.rds\")"
+), chunk_opts = list(label = "setup", include = FALSE)), setup = NULL, 
+    chunks = list(list(label = "b1", code = "# Đã import sẵn dataset crop_full.\n# crop_full <- readRDS(file = \"crop_production_all_data.rds\")\n\nstr(crop_full)\n", 
+        opts = list(label = "\"b1\"", exercise = "TRUE", exercise.lines = "10", 
+            connection = "\"crop_full\""), engine = "r")), code_check = NULL, 
+    error_check = NULL, check = NULL, solution = NULL, tests = NULL, 
+    options = list(eval = FALSE, echo = TRUE, results = "markup", 
+        tidy = FALSE, tidy.opts = NULL, collapse = FALSE, prompt = FALSE, 
+        comment = NA, highlight = FALSE, size = "normalsize", 
+        background = "#F7F7F7", strip.white = TRUE, cache = 0, 
+        cache.path = "hack2_cache/html/", cache.vars = NULL, 
         cache.lazy = TRUE, dependson = NULL, autodep = FALSE, 
         cache.rebuild = FALSE, fig.keep = "high", fig.show = "asis", 
         fig.align = "default", fig.path = "hack2_files/figure-html/", 
@@ -768,8 +782,10 @@ learnr:::store_exercise_cache(structure(list(label = "b1", global_setup = struct
         message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, label = "b1", exercise = TRUE, exercise.lines = 10, 
-        code = c("crop_full <- readRDS(file = \"data/crop_production_all_data.rds\")", 
-        ""), out.width.px = 624, out.height.px = 384, params.src = "b1, exercise=TRUE, exercise.lines = 10", 
+        connection = "crop_full", code = c("# Đã import sẵn dataset crop_full.", 
+        "# crop_full <- readRDS(file = \"crop_production_all_data.rds\")", 
+        "", "str(crop_full)", ""), out.width.px = 624, out.height.px = 384, 
+        params.src = "b1, exercise=TRUE, exercise.lines = 10, connection=\"crop_full\"", 
         fig.num = 0, exercise.df_print = "paged", exercise.checker = "NULL"), 
     engine = "r", version = "4"), class = c("r", "tutorial_exercise"
 )))
@@ -785,16 +801,20 @@ output$`tutorial-exercise-b1-solution-1-output` <- renderUI({
 
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::store_exercise_cache(structure(list(label = "b1-solution-1", global_setup = structure(c("library(learnr)", 
-"knitr::opts_chunk$set(echo = FALSE)"), chunk_opts = list(label = "setup", 
-    include = FALSE)), setup = NULL, chunks = list(list(label = "b1-solution-1", 
-    code = "crop_full <- readRDS(file = \"data/crop_production_all_data.rds\")\nok <- as.data.frame(table(crop_full$item, crop_full$element))\nok_1 <- ok |> subset(Freq != 0)\nok_2 <- reshape(data = ok_1,\n                idvar = c(\"Var1\"),\n                v.names = \"Freq\",\n                timevar = \"Var2\",\n                direction = \"wide\")\nok_2[!is.na(ok_2$Freq.area_harvested) & !is.na(ok_2$Freq.production), ] -> ok_3\nas.character(ok_3$Var1) -> crop_item\ncrop_item", 
-    opts = list(label = "\"b1-solution-1\"", exercise = "TRUE"), 
-    engine = "r")), code_check = NULL, error_check = NULL, check = NULL, 
-    solution = NULL, tests = NULL, options = list(eval = FALSE, 
-        echo = TRUE, results = "markup", tidy = FALSE, tidy.opts = NULL, 
-        collapse = FALSE, prompt = FALSE, comment = NA, highlight = FALSE, 
-        size = "normalsize", background = "#F7F7F7", strip.white = TRUE, 
-        cache = 0, cache.path = "hack2_cache/html/", cache.vars = NULL, 
+"knitr::opts_chunk$set(echo = FALSE)", "", "if (!file.exists(\"crop_production_all_data.rds\")) {", 
+"  download.file(url = \"https://studyr.netlify.app/faostat/data_raw/crop_production_all_data.rds\",", 
+"                destfile = \"crop_production_all_data.rds\", mode = \"wb\")", 
+"}", "crop_full <- readRDS(file = \"crop_production_all_data.rds\")"
+), chunk_opts = list(label = "setup", include = FALSE)), setup = NULL, 
+    chunks = list(list(label = "b1-solution-1", code = "# Đã import sẵn dataset crop_full.\n# crop_full <- readRDS(file = \"crop_production_all_data.rds\")\nok <- as.data.frame(table(crop_full$item, crop_full$element))\nok_1 <- ok |> subset(Freq != 0)\nok_2 <- reshape(data = ok_1,\n                idvar = c(\"Var1\"),\n                v.names = \"Freq\",\n                timevar = \"Var2\",\n                direction = \"wide\")\nok_2[!is.na(ok_2$Freq.area_harvested) & !is.na(ok_2$Freq.production), ] -> ok_3\nas.character(ok_3$Var1) -> crop_item\ncrop_item", 
+        opts = list(label = "\"b1-solution-1\"", exercise = "TRUE", 
+            connection = "\"crop_full\""), engine = "r")), code_check = NULL, 
+    error_check = NULL, check = NULL, solution = NULL, tests = NULL, 
+    options = list(eval = FALSE, echo = TRUE, results = "markup", 
+        tidy = FALSE, tidy.opts = NULL, collapse = FALSE, prompt = FALSE, 
+        comment = NA, highlight = FALSE, size = "normalsize", 
+        background = "#F7F7F7", strip.white = TRUE, cache = 0, 
+        cache.path = "hack2_cache/html/", cache.vars = NULL, 
         cache.lazy = TRUE, dependson = NULL, autodep = FALSE, 
         cache.rebuild = FALSE, fig.keep = "high", fig.show = "asis", 
         fig.align = "default", fig.path = "hack2_files/figure-html/", 
@@ -807,14 +827,15 @@ learnr:::store_exercise_cache(structure(list(label = "b1-solution-1", global_set
         message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, label = "b1-solution-1", exercise = TRUE, 
-        code = c("crop_full <- readRDS(file = \"data/crop_production_all_data.rds\")", 
+        connection = "crop_full", code = c("# Đã import sẵn dataset crop_full.", 
+        "# crop_full <- readRDS(file = \"crop_production_all_data.rds\")", 
         "ok <- as.data.frame(table(crop_full$item, crop_full$element))", 
         "ok_1 <- ok |> subset(Freq != 0)", "ok_2 <- reshape(data = ok_1,", 
         "                idvar = c(\"Var1\"),", "                v.names = \"Freq\",", 
         "                timevar = \"Var2\",", "                direction = \"wide\")", 
         "ok_2[!is.na(ok_2$Freq.area_harvested) & !is.na(ok_2$Freq.production), ] -> ok_3", 
         "as.character(ok_3$Var1) -> crop_item", "crop_item"), 
-        out.width.px = 624, out.height.px = 384, params.src = "b1-solution-1, exercise=TRUE", 
+        out.width.px = 624, out.height.px = 384, params.src = "b1-solution-1, exercise=TRUE, connection=\"crop_full\"", 
         fig.num = 0, exercise.df_print = "paged", exercise.checker = "NULL"), 
     engine = "r", version = "4"), class = c("r", "tutorial_exercise"
 )))

@@ -9,6 +9,12 @@ date: "Thực hiện: May 03, 2023"
 ```{r setup, include=FALSE}
 library(learnr)
 knitr::opts_chunk$set(echo = FALSE)
+
+if (!file.exists("crop_production_all_data.rds")) {
+  download.file(url = "https://studyr.netlify.app/faostat/data_raw/crop_production_all_data.rds",
+                destfile = "crop_production_all_data.rds", mode = "wb")
+}
+crop_full <- readRDS(file = "crop_production_all_data.rds")
 ```
 
 ## Làm việc với data frame
@@ -32,10 +38,6 @@ knitr::opts_chunk$set(echo = FALSE)
 **Ví dụ `item == "Rice"` <mark>(thuộc nhóm trồng trọt)</mark> sẽ đi kèm với các `element` là biến `production`, `area_harvested`, và đôi khi là `yield`, còn `item == "Chickens"` (thuộc nhóm chăn nuôi) chỉ có `element` tương ứng là `stocks`.**
 
 **Danh sách tổng số lượng nông sản trong dataset của FAOSTAT.**
-
-```{r, message=FALSE, warning=FALSE}
-crop_full <- readRDS(file = "data/crop_production_all_data.rds")
-```
 
 <span style = "color: green">• **Kích thước của dataset**</span>
 
@@ -78,10 +80,13 @@ crop_item
 
 ## Làm bài tập
 
-<span style = "color: blue">**Khi viết code online sẽ hơi bị chậm/lag. Bạn có thể thực hiện bài tập này offline theo [hướng dẫn ở đây.](https://tuhocr.github.io/tuhocr/#l%C3%A0m-b%C3%A0i-t%E1%BA%ADp-r)**</span>
+<span style = "color: blue">**Bạn thực hiện bài tập này offline theo [hướng dẫn ở đây nhé.](https://tuhocr.github.io/tuhocr/#l%C3%A0m-b%C3%A0i-t%E1%BA%ADp-r)**</span>
 
-```{r b1, exercise=TRUE, exercise.lines = 10}
-crop_full <- readRDS(file = "data/crop_production_all_data.rds")
+```{r b1, exercise=TRUE, exercise.lines = 10, connection="crop_full"}
+# Đã import sẵn dataset crop_full.
+# crop_full <- readRDS(file = "crop_production_all_data.rds")
+
+str(crop_full)
 
 ```
 
@@ -91,8 +96,9 @@ crop_full <- readRDS(file = "data/crop_production_all_data.rds")
 
 <span style = "color: green">**Có nhiều cách để giải bài tập này, ở đây mình tiếp cận theo cách dùng lệnh `table()` để lọc ra các tổ hợp giữa `item` và `element` sau đó `reshape()` qua dạng wide rồi lọc dữ liệu theo tính logic của câu chuyện như đã phân tích ở phần độ khó của bài tập này.**</span>
 
-```{r b1-solution-1, exercise=TRUE}
-crop_full <- readRDS(file = "data/crop_production_all_data.rds")
+```{r b1-solution-1, exercise=TRUE, connection="crop_full"}
+# Đã import sẵn dataset crop_full.
+# crop_full <- readRDS(file = "crop_production_all_data.rds")
 ok <- as.data.frame(table(crop_full$item, crop_full$element))
 ok_1 <- ok |> subset(Freq != 0)
 ok_2 <- reshape(data = ok_1,
