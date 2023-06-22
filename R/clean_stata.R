@@ -1,8 +1,8 @@
-clean_spss <- function(input_data, ...) {
+clean_stata <- function(input_data, ...) {
 
     requireNamespace("haven", quietly = TRUE)
 
-    spss_file <- haven::read_sav(input_data, ...)
+    spss_file <- haven::read_dta(input_data, ...)
 
     data_ok <- as.data.frame(spss_file)
 

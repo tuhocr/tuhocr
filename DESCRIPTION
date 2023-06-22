@@ -1,7 +1,7 @@
 Package: tuhocr
 Type: Package
 Title: Functions for daily tasks 
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: person("Duc", "Nguyen", , "tuhocr.com@gmail.com.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-0329-9082"))
 Maintainer: Duc Nguyen <tuhocr.com@gmail.com>
