@@ -65,6 +65,8 @@ clean_stata <- function(input_data, ...) {
         attributes(data_ok[, j]) <- NULL
     }
 
+    attributes(data_ok)$notes <- NULL
+
     return(data_ok)
 }
 
