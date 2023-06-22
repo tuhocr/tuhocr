@@ -18,7 +18,7 @@ Cài đặt package `tuhocr` theo cách sau:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("tuhocr/tuhocr")
+devtools::install_github("tuhocr/tuhocr", force = TRUE)
 ```
 
 Trước mắt trong package này có function `clean_spss()` giúp import file

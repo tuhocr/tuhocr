@@ -27,7 +27,7 @@ Cài đặt package `tuhocr` theo cách sau:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("tuhocr/tuhocr")
+devtools::install_github("tuhocr/tuhocr", force = TRUE)
 ```
 
 Trước mắt trong package này có function `clean_spss()` giúp import file SPSS (.sav) vào trong R. Sau đó các cột có label sẽ được chuyển thành factor, cũng như làm sạch các thông tin liên quan đến SPSS để ta có data frame sạch.
