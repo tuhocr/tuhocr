@@ -2,9 +2,9 @@ clean_stata <- function(input_data, ...) {
 
     requireNamespace("haven", quietly = TRUE)
 
-    spss_file <- haven::read_dta(input_data, ...)
+    stata_file <- haven::read_dta(input_data, ...)
 
-    data_ok <- as.data.frame(spss_file)
+    data_ok <- as.data.frame(stata_file)
 
     # extract label
     sapply(data_ok, class) -> class_ok
