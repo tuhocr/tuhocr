@@ -1,11 +1,11 @@
 Package: tuhocr
 Type: Package
 Title: Functions for daily tasks 
-Version: 0.1.2
+Version: 0.1.3
 Authors@R: person("Duc", "Nguyen", , "tuhocr.com@gmail.com.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-0329-9082"))
 Maintainer: Duc Nguyen <tuhocr.com@gmail.com>
-Imports: haven
+Imports: haven, dplyr, stats
 Description: Package này tập hợp các function giúp giải quyết công việc xử lý dữ liệu thường ngày. Để biết cách viết function, thân mời bạn tham gia khóa học R ở www.tuhocr.com giúp trang bị kiến thức R vững chắc.
 License: GPL (>= 3)
 URL: https://tuhocr.github.io/
