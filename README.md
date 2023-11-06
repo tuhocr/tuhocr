@@ -9,8 +9,9 @@
 <!-- badges: end -->
 
 Package này tập hợp các function giúp giải quyết công việc xử lý dữ liệu
-thường ngày. Để biết cách viết function, thân mời bạn tham gia khóa học
-R ở **`www.tuhocr.com`** giúp trang bị kiến thức R vững chắc.
+thường ngày. Để ứng dụng R có hiệu quả vào công việc, thân mời bạn tham
+gia khóa học R ở **`www.tuhocr.com`** giúp trang bị kiến thức R vững
+chắc.
 
 ## Hướng dẫn cài đặt
 
@@ -21,7 +22,7 @@ Cài đặt package `tuhocr` theo cách sau:
 devtools::install_github("tuhocr/tuhocr", force = TRUE)
 ```
 
-## Function dùng làm sạch dataset từ SPSS và Stata
+## Function dùng làm sạch dataset
 
 Trong package này có function `clean_spss()` giúp import file SPSS
 (.sav) vào trong R. Sau đó các cột có label sẽ được chuyển thành factor,
@@ -78,13 +79,16 @@ là codename tương ứng của từng bài tập.
 
 ## Trích xuất dữ liệu từ FAOSTAT
 
-Sử dụng function `filter_faostat` để trích xuất dữ liệu nông sản từ
-FAOSTAT. Hướng dẫn chi tiết xem ở đây.
+Áp dụng function `extract_faostat()` và `filter_faostat()` để trích xuất
+dữ liệu cây trồng từ FAOSTAT. [Hướng dẫn chi
+tiết](https://tuhocr.github.io/articles/filter_faostat.html)
 
 ## Liên hệ
 
 ``` r
 Email: tuhocr.com@gmail.com
+
+Website: www.tuhocr.com
 
 Facebook: www.facebook.com/tuhocr
 
