@@ -21,10 +21,12 @@ Cài đặt package `tuhocr` theo cách sau:
 devtools::install_github("tuhocr/tuhocr", force = TRUE)
 ```
 
-Trước mắt trong package này có function `clean_spss()` giúp import file
-SPSS (.sav) vào trong R. Sau đó các cột có label sẽ được chuyển thành
-factor, cũng như làm sạch các thông tin liên quan đến SPSS để ta có data
-frame sạch.
+## Function dùng làm sạch dataset từ SPSS và Stata
+
+Trong package này có function `clean_spss()` giúp import file SPSS
+(.sav) vào trong R. Sau đó các cột có label sẽ được chuyển thành factor,
+cũng như làm sạch các thông tin liên quan đến SPSS để ta có data frame
+sạch. Tương tự cho function `clean_stata()`.
 
 ``` r
 # Các bạn download các file SPSS (.sav) example này về.
@@ -74,6 +76,11 @@ chậm, vì vậy bạn có thể render local trên máy tính bằng dòng l�
 `learnr::run_tutorial(name = "hack1", package = "tuhocr")` với `hack1`
 là codename tương ứng của từng bài tập.
 
+## Trích xuất dữ liệu từ FAOSTAT
+
+Sử dụng function `filter_faostat` để trích xuất dữ liệu nông sản từ
+FAOSTAT. Hướng dẫn chi tiết xem ở đây.
+
 ## Liên hệ
 
 ``` r
@@ -84,4 +91,6 @@ Facebook: www.facebook.com/tuhocr
 Fanpage: www.facebook.com/Huong.Dan.Tu.Hoc.R
 
 Group: www.facebook.com/groups/tuhocr
+
+Youtube: https://www.youtube.com/@tuhocr
 ```

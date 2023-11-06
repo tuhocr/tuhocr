@@ -45,6 +45,12 @@
 <li class="nav-item">
   <a class="nav-link" href="reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="articles/filter_faostat.html">Hướng dẫn trích xuất dữ liệu nông sản từ FAOSTAT</a>
+  </div>
+</li>
 <li class="nav-item">
   <a class="nav-link" href="news/index.html">Changelog</a>
 </li>
@@ -82,7 +88,11 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"tuhocr/tuhocr"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p>Trước mắt trong package này có function <code><a href="reference/clean_spss.html">clean_spss()</a></code> giúp import file SPSS (.sav) vào trong R. Sau đó các cột có label sẽ được chuyển thành factor, cũng như làm sạch các thông tin liên quan đến SPSS để ta có data frame sạch.</p>
+</div>
+<div class="section level2">
+<h2 id="function-dùng-làm-sạch-dataset-từ-spss-và-stata">Function dùng làm sạch dataset từ SPSS và Stata<a class="anchor" aria-label="anchor" href="#function-d%C3%B9ng-l%C3%A0m-s%E1%BA%A1ch-dataset-t%E1%BB%AB-spss-v%C3%A0-stata"></a>
+</h2>
+<p>Trong package này có function <code><a href="reference/clean_spss.html">clean_spss()</a></code> giúp import file SPSS (.sav) vào trong R. Sau đó các cột có label sẽ được chuyển thành factor, cũng như làm sạch các thông tin liên quan đến SPSS để ta có data frame sạch. Tương tự cho function <code><a href="reference/clean_stata.html">clean_stata()</a></code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Các bạn download các file SPSS (.sav) example này về.</span></span>
 <span><span class="co"># http://spss.allenandunwin.com.s3-website-ap-southeast-2.amazonaws.com/data-files.html</span></span>
@@ -125,16 +135,22 @@
 <p>Mình định kỳ có upload các bài tập củng cố kiến thức R ở chuyên mục <a href="https://www.tuhocr.com/r-courses/code-base-for-r" class="external-link">Bài Tập R</a>. Các file này chạy online trên server RStudio (Shiny app) tuy nhiên đôi khi sẽ bị chậm, vì vậy bạn có thể render local trên máy tính bằng dòng lệnh <code>learnr::run_tutorial(name = "hack1", package = "tuhocr")</code> với <code>hack1</code> là codename tương ứng của từng bài tập.</p>
 </div>
 <div class="section level2">
+<h2 id="trích-xuất-dữ-liệu-từ-faostat">Trích xuất dữ liệu từ FAOSTAT<a class="anchor" aria-label="anchor" href="#tr%C3%ADch-xu%E1%BA%A5t-d%E1%BB%AF-li%E1%BB%87u-t%E1%BB%AB-faostat"></a>
+</h2>
+<p>Sử dụng function <code>filter_faostat</code> để trích xuất dữ liệu nông sản từ FAOSTAT. Hướng dẫn chi tiết xem ở đây.</p>
+</div>
+<div class="section level2">
 <h2 id="liên-hệ">Liên hệ<a class="anchor" aria-label="anchor" href="#li%C3%AAn-h%E1%BB%87"></a>
 </h2>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Email</span><span class="op">:</span> <span class="va">tuhocr.com</span><span class="op">@</span><span class="va">gmail.com</span></span>
-<span></span>
-<span><span class="va">Facebook</span><span class="op">:</span> <span class="va">www.facebook.com</span><span class="op">/</span><span class="va">tuhocr</span></span>
-<span></span>
-<span><span class="va">Fanpage</span><span class="op">:</span> <span class="va">www.facebook.com</span><span class="op">/</span><span class="va">Huong.Dan.Tu.Hoc.R</span></span>
-<span></span>
-<span><span class="va">Group</span><span class="op">:</span> <span class="va">www.facebook.com</span><span class="op">/</span><span class="va">groups</span><span class="op">/</span><span class="va">tuhocr</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>Email<span class="sc">:</span> tuhocr.com<span class="sc">@</span>gmail.com</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>Facebook<span class="sc">:</span> www.facebook.com<span class="sc">/</span>tuhocr</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>Fanpage<span class="sc">:</span> www.facebook.com<span class="sc">/</span>Huong.Dan.Tu.Hoc.R</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>Group<span class="sc">:</span> www.facebook.com<span class="sc">/</span>groups<span class="sc">/</span>tuhocr</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>Youtube<span class="sc">:</span> https<span class="sc">:</span><span class="er">//</span>www.youtube.com<span class="sc">/</span><span class="er">@</span>tuhocr</span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
