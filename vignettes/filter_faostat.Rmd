@@ -5,6 +5,7 @@ vignette: >
   %\VignetteIndexEntry{Hướng dẫn trích xuất dữ liệu nông sản từ FAOSTAT}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{rmarkdown}
 ---
 
 ```{r, include = FALSE}
@@ -16,6 +17,6 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(tuhocr)
-1+1
+
 
 ```

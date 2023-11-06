@@ -80,7 +80,7 @@ là codename tương ứng của từng bài tập.
 ## Trích xuất dữ liệu từ FAOSTAT
 
 Áp dụng function `extract_faostat()` và `filter_faostat()` để trích xuất
-dữ liệu cây trồng từ FAOSTAT. [Hướng dẫn chi
+dữ liệu nông sản từ FAOSTAT theo thứ hạng và thời gian. [Hướng dẫn chi
 tiết](https://tuhocr.github.io/articles/filter_faostat.html)
 
 ## Liên hệ

@@ -20,7 +20,7 @@ License: \tab GPL (>= 3)\cr
 \author{
 Duc Nguyen | Founder of tuhocr.com
 
-Chuyên đào tạo kỹ năng xử lý dữ liệu sử dụng phần mềm R cho người mới bắt đầu.
+Chuyên đào tạo kỹ năng xử lý dữ liệu sử dụng phần mềm R.
 
 Maintainer: Duc Nguyen <tuhocr.com@gmail.com>
 }
