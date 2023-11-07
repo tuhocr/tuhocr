@@ -15,14 +15,20 @@ chắc.
 
 ## Hướng dẫn cài đặt
 
-Cài đặt package `tuhocr` theo cách sau:
+Cài đặt package `tuhocr` theo cách sau.
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("tuhocr/tuhocr", force = TRUE)
 ```
 
-## Function dùng làm sạch dataset
+Lưu ý: Thông thường khi cài đặt package thì R sẽ đề nghị bạn update các
+package khác có liên quan. Để đảm bảo hệ thống ổn định thì bạn không cần
+thiết phải update nhé.
+
+## Các chức năng chính
+
+### Function dùng làm sạch dataset
 
 Trong package này có function `clean_spss()` giúp import file SPSS
 (.sav) vào trong R. Sau đó các cột có label sẽ được chuyển thành factor,
@@ -68,7 +74,7 @@ str(data)
 #>  $ DepT3gp2: Factor w/ 2 levels "not depressed",..: 1 1 1 1 1 1 1 1 1 2 ...
 ```
 
-## Làm bài tập R
+### Làm bài tập R
 
 Mình định kỳ có upload các bài tập củng cố kiến thức R ở chuyên mục [Bài
 Tập R](https://www.tuhocr.com/r-courses/code-base-for-r). Các file này
@@ -77,13 +83,47 @@ chậm, vì vậy bạn có thể render local trên máy tính bằng dòng l�
 `learnr::run_tutorial(name = "hack1", package = "tuhocr")` với `hack1`
 là codename tương ứng của từng bài tập.
 
-## Trích xuất dữ liệu từ FAOSTAT
+### Trích xuất dữ liệu từ FAOSTAT
 
 Áp dụng function `extract_faostat()` và `filter_faostat()` để trích xuất
 dữ liệu nông sản từ FAOSTAT theo thứ hạng và thời gian. [Hướng dẫn chi
 tiết](https://tuhocr.github.io/articles/filter_faostat.html)
 
-## Liên hệ
+## Thông tin package
+
+### Bản quyền
+
+Các function trong package `tuhocr` được viết theo giấy phép [GNU
+General Public License (version
+3)](https://tuhocr.github.io/LICENSE.html) cho phép phân phối hoàn toàn
+miễn phí đến người sử dụng. Ở vai người dùng, bạn được quyền chỉnh sửa
+function và tái phân phối lại hoàn toàn tự do.
+
+Mặc dù mình (Duc Nguyen) đã kiểm tra rất kỹ hoạt động của package để đảm
+bảo kết quả chính xác, tuy nhiên vẫn sẽ có sai sót, có gì bạn email báo
+lỗi trực tiếp cho mình qua email để kịp thời chỉnh sửa lại nhé.
+
+<mark style="background-color: #FFFF00">Chỉ là bạn cần nắm rõ: Bởi vì
+package này sử dụng giấy phép GNU nên việc áp dụng các function trong
+package `tuhocr` vào công việc của bạn nếu có sai sót gì phát sinh thì
+hoàn toàn là do bạn. Không có bất kỳ bảo hành hay chịu trách nhiệm gì về
+phía mình (là người viết package này).</mark>
+
+``` r
+# This program comes with ABSOLUTELY NO WARRANTY; for details type 'show w'.
+# This is free software, and you are welcome to redistribute it
+# under certain conditions.
+```
+
+### Trích dẫn
+
+``` r
+print(citation("tuhocr"), style = "text")
+#> Nguyen D (2023). _tuhocr: Functions for daily tasks_. R package version
+#> 0.1.3, <https://tuhocr.github.io/>.
+```
+
+### Liên hệ
 
 ``` r
 Email: tuhocr.com@gmail.com

@@ -84,14 +84,18 @@
 <div class="section level2">
 <h2 id="hướng-dẫn-cài-đặt">Hướng dẫn cài đặt<a class="anchor" aria-label="anchor" href="#h%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-c%C3%A0i-%C4%91%E1%BA%B7t"></a>
 </h2>
-<p>Cài đặt package <code>tuhocr</code> theo cách sau:</p>
+<p>Cài đặt package <code>tuhocr</code> theo cách sau.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"tuhocr/tuhocr"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>Lưu ý: Thông thường khi cài đặt package thì R sẽ đề nghị bạn update các package khác có liên quan. Để đảm bảo hệ thống ổn định thì bạn không cần thiết phải update nhé.</p>
 </div>
 <div class="section level2">
-<h2 id="function-dùng-làm-sạch-dataset">Function dùng làm sạch dataset<a class="anchor" aria-label="anchor" href="#function-d%C3%B9ng-l%C3%A0m-s%E1%BA%A1ch-dataset"></a>
+<h2 id="các-chức-năng-chính">Các chức năng chính<a class="anchor" aria-label="anchor" href="#c%C3%A1c-ch%E1%BB%A9c-n%C4%83ng-ch%C3%ADnh"></a>
 </h2>
+<div class="section level3">
+<h3 id="function-dùng-làm-sạch-dataset">Function dùng làm sạch dataset<a class="anchor" aria-label="anchor" href="#function-d%C3%B9ng-l%C3%A0m-s%E1%BA%A1ch-dataset"></a>
+</h3>
 <p>Trong package này có function <code><a href="reference/clean_spss.html">clean_spss()</a></code> giúp import file SPSS (.sav) vào trong R. Sau đó các cột có label sẽ được chuyển thành factor, cũng như làm sạch các thông tin liên quan đến SPSS để ta có data frame sạch. Tương tự cho function <code><a href="reference/clean_stata.html">clean_stata()</a></code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Các bạn download các file SPSS (.sav) example này về.</span></span>
@@ -129,30 +133,54 @@
 <span><span class="co">#&gt;  $ DepT2Gp2: Factor w/ 2 levels "not depressed",..: 1 1 1 1 2 1 1 2 1 2 ...</span></span>
 <span><span class="co">#&gt;  $ DepT3gp2: Factor w/ 2 levels "not depressed",..: 1 1 1 1 1 1 1 1 1 2 ...</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="làm-bài-tập-r">Làm bài tập R<a class="anchor" aria-label="anchor" href="#l%C3%A0m-b%C3%A0i-t%E1%BA%ADp-r"></a>
-</h2>
+<div class="section level3">
+<h3 id="làm-bài-tập-r">Làm bài tập R<a class="anchor" aria-label="anchor" href="#l%C3%A0m-b%C3%A0i-t%E1%BA%ADp-r"></a>
+</h3>
 <p>Mình định kỳ có upload các bài tập củng cố kiến thức R ở chuyên mục <a href="https://www.tuhocr.com/r-courses/code-base-for-r" class="external-link">Bài Tập R</a>. Các file này chạy online trên server RStudio (Shiny app) tuy nhiên đôi khi sẽ bị chậm, vì vậy bạn có thể render local trên máy tính bằng dòng lệnh <code>learnr::run_tutorial(name = "hack1", package = "tuhocr")</code> với <code>hack1</code> là codename tương ứng của từng bài tập.</p>
 </div>
-<div class="section level2">
-<h2 id="trích-xuất-dữ-liệu-từ-faostat">Trích xuất dữ liệu từ FAOSTAT<a class="anchor" aria-label="anchor" href="#tr%C3%ADch-xu%E1%BA%A5t-d%E1%BB%AF-li%E1%BB%87u-t%E1%BB%AB-faostat"></a>
-</h2>
+<div class="section level3">
+<h3 id="trích-xuất-dữ-liệu-từ-faostat">Trích xuất dữ liệu từ FAOSTAT<a class="anchor" aria-label="anchor" href="#tr%C3%ADch-xu%E1%BA%A5t-d%E1%BB%AF-li%E1%BB%87u-t%E1%BB%AB-faostat"></a>
+</h3>
 <p>Áp dụng function <code><a href="reference/extract_faostat.html">extract_faostat()</a></code> và <code><a href="reference/filter_faostat.html">filter_faostat()</a></code> để trích xuất dữ liệu nông sản từ FAOSTAT theo thứ hạng và thời gian. <a href="https://tuhocr.github.io/articles/filter_faostat.html" class="external-link">Hướng dẫn chi tiết</a></p>
 </div>
+</div>
 <div class="section level2">
-<h2 id="liên-hệ">Liên hệ<a class="anchor" aria-label="anchor" href="#li%C3%AAn-h%E1%BB%87"></a>
+<h2 id="thông-tin-package">Thông tin package<a class="anchor" aria-label="anchor" href="#th%C3%B4ng-tin-package"></a>
 </h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>Email<span class="sc">:</span> tuhocr.com<span class="sc">@</span>gmail.com</span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>Website<span class="sc">:</span> www.tuhocr.com</span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>Facebook<span class="sc">:</span> www.facebook.com<span class="sc">/</span>tuhocr</span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>Fanpage<span class="sc">:</span> www.facebook.com<span class="sc">/</span>Huong.Dan.Tu.Hoc.R</span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>Group<span class="sc">:</span> www.facebook.com<span class="sc">/</span>groups<span class="sc">/</span>tuhocr</span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>Youtube<span class="sc">:</span> https<span class="sc">:</span><span class="er">//</span>www.youtube.com<span class="sc">/</span><span class="er">@</span>tuhocr</span></code></pre></div>
+<div class="section level3">
+<h3 id="bản-quyền">Bản quyền<a class="anchor" aria-label="anchor" href="#b%E1%BA%A3n-quy%E1%BB%81n"></a>
+</h3>
+<p>Các function trong package <code>tuhocr</code> được viết theo giấy phép <a href="https://tuhocr.github.io/LICENSE.html" class="external-link">GNU General Public License (version 3)</a> cho phép phân phối hoàn toàn miễn phí đến người sử dụng. Ở vai người dùng, bạn được quyền chỉnh sửa function và tái phân phối lại hoàn toàn tự do.</p>
+<p>Mặc dù mình (Duc Nguyen) đã kiểm tra rất kỹ hoạt động của package để đảm bảo kết quả chính xác, tuy nhiên vẫn sẽ có sai sót, có gì bạn email báo lỗi trực tiếp cho mình qua email để kịp thời chỉnh sửa lại nhé.</p>
+<p><mark>Chỉ là bạn cần nắm rõ: Bởi vì package này sử dụng giấy phép GNU nên việc áp dụng các function trong package <code>tuhocr</code> vào công việc của bạn nếu có sai sót gì phát sinh thì hoàn toàn là do bạn. Không có bất kỳ bảo hành hay chịu trách nhiệm gì về phía mình (là người viết package này).</mark></p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># This program comes with ABSOLUTELY NO WARRANTY; for details type 'show w'.</span></span>
+<span><span class="co"># This is free software, and you are welcome to redistribute it</span></span>
+<span><span class="co"># under certain conditions.</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="trích-dẫn">Trích dẫn<a class="anchor" aria-label="anchor" href="#tr%C3%ADch-d%E1%BA%ABn"></a>
+</h3>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"tuhocr"</span><span class="op">)</span>, style <span class="op">=</span> <span class="st">"text"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Nguyen D (2023). _tuhocr: Functions for daily tasks_. R package version</span></span>
+<span><span class="co">#&gt; 0.1.3, &lt;https://tuhocr.github.io/&gt;.</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="liên-hệ">Liên hệ<a class="anchor" aria-label="anchor" href="#li%C3%AAn-h%E1%BB%87"></a>
+</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>Email<span class="sc">:</span> tuhocr.com<span class="sc">@</span>gmail.com</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>Website<span class="sc">:</span> www.tuhocr.com</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>Facebook<span class="sc">:</span> www.facebook.com<span class="sc">/</span>tuhocr</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>Fanpage<span class="sc">:</span> www.facebook.com<span class="sc">/</span>Huong.Dan.Tu.Hoc.R</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>Group<span class="sc">:</span> www.facebook.com<span class="sc">/</span>groups<span class="sc">/</span>tuhocr</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>Youtube<span class="sc">:</span> https<span class="sc">:</span><span class="er">//</span>www.youtube.com<span class="sc">/</span><span class="er">@</span>tuhocr</span></code></pre></div>
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

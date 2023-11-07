@@ -79,7 +79,9 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Hướng dẫn trích xuất dữ liệu nông sản từ FAOSTAT</h1>
+                        <h4 data-toc-skip class="author">Duc Nguyen</h4>
             
+            <h4 data-toc-skip class="date">2023-11-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tuhocr/tuhocr/blob/HEAD/vignettes/filter_faostat.Rmd" class="external-link"><code>vignettes/filter_faostat.Rmd</code></a></small>
       <div class="d-none name"><code>filter_faostat.Rmd</code></div>
@@ -87,9 +89,380 @@
 
     
     
+<div class="section level2">
+<h2 id="quy-trình-trích-xuất-dữ-liệu-từ-faostat">Quy trình trích xuất dữ liệu từ FAOSTAT<a class="anchor" aria-label="anchor" href="#quy-tr%C3%ACnh-tr%C3%ADch-xu%E1%BA%A5t-d%E1%BB%AF-li%E1%BB%87u-t%E1%BB%AB-faostat"></a>
+</h2>
+<p>Thông thường để trích xuất dữ liệu nông sản từ FAOSTAT, bạn sẽ lên
+trực tiếp trang web <code>https://www.fao.org/faostat/en/</code> và tải
+về dataset liên quan cũng như sử dụng các công cụ lọc dữ liệu và vẽ đồ
+thị được cung cấp sẵn trên website.</p>
+<p>Để thực hiện việc này nhanh gọn trong R thì bạn cần các bước sau:</p>
+<p><strong>1/ Bạn sử dụng package <code>FAOSTAT</code> để download tự
+động dataset R về máy tính.</strong></p>
+<ul>
+<li>download dataset mã <code>QCL</code> dành cho nông sản</li>
+</ul>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tuhocr.github.io/" class="external-link">tuhocr</a></span><span class="op">)</span></span></code></pre></div>
-  </main>
+<code class="sourceCode R"><span><span class="co"># install.packages("FAOSTAT")</span></span>
+<span><span class="co"># library(FAOSTAT)</span></span>
+<span></span>
+<span><span class="co"># search_dataset(dataset_code = "QCL",</span></span>
+<span><span class="co">#                latest = TRUE, </span></span>
+<span><span class="co">#                reset_cache = FALSE)</span></span>
+<span><span class="co"># </span></span>
+<span><span class="co"># crop_production &lt;- get_faostat_bulk(code = "QCL", </span></span>
+<span><span class="co">#                                     data_folder = "./")</span></span>
+<span></span>
+<span><span class="co"># bạn có thể lưu file này ra dạng .RDS để sau này đọc lại từ R sẽ nhanh hơn,</span></span>
+<span><span class="co"># không cần download lại từ FAOSTAT.</span></span>
+<span></span>
+<span><span class="co"># saveRDS(crop_production, "crop_production.rds")</span></span>
+<span></span>
+<span><span class="co"># crop_production &lt;- readRDS("crop_production.rds")</span></span></code></pre></div>
+<ul>
+<li>download file csv chứa danh sách quốc gia và vùng lãnh thổ</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># chọn Country/Region ở link này https://www.fao.org/faostat/en/#definitions</span></span></code></pre></div>
+<p><strong>2/ Import 2 file ở trên vào R và sử dụng function để trích
+xuất dữ liệu.</strong></p>
+<p>Khi bạn download package <code>tuhocr</code> về máy tính thì mình đã
+để sẵn 2 file <code>crop_production_all_data.rds</code> và
+<code>FAOSTAT_data_3-21-2023.csv</code> ở thời điểm tháng 3/2023 rồi, vì
+vậy bạn có thể dùng các file này để trích xuất dữ liệu.</p>
+<p>Trong ví dụ minh họa này mình dùng function
+<code><a href="../reference/filter_faostat.html">filter_faostat()</a></code> để trích xuất ra 10 quốc gia sản xuất cà
+phê nhiều nhất trên thế giới năm 2021. Tham số <code>rank_filter</code>
+và <code>year_filter</code> được thiết kế để lọc dữ liệu theo thứ hạng
+và theo các mốc thời gian khác nhau tùy vào nhu cầu phân tích dữ
+liệu.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># df_1 &lt;- readRDS("crop_production.rds")</span></span>
+<span><span class="co"># df_2 &lt;- read.csv("FAOSTAT_data_2023.csv")</span></span>
+<span></span>
+<span><span class="va">crop_production</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>,</span>
+<span>                               <span class="st">"crop_production_all_data.rds"</span>,</span>
+<span>                               package <span class="op">=</span> <span class="st">"tuhocr"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">crop_production</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">FAOSTAT_data_2023</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>,</span>
+<span>                                 <span class="st">"FAOSTAT_data_3-21-2023.csv"</span>, </span>
+<span>                                 package <span class="op">=</span> <span class="st">"tuhocr"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">FAOSTAT_data_2023</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tuhocr.github.io/" class="external-link">tuhocr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Thực hiện dòng lệnh sẽ thu được danh sách các quốc gia</span></span>
+<span><span class="co"># sản xuất cà phê trên thế giới được sắp xếp theo</span></span>
+<span><span class="co"># thứ hạng và năm.</span></span>
+<span></span>
+<span><span class="va">coffee_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_faostat.html">filter_faostat</a></span><span class="op">(</span>data_rds <span class="op">=</span> <span class="va">df_1</span>,</span>
+<span>data_region <span class="op">=</span> <span class="va">df_2</span>,</span>
+<span>item_filter <span class="op">=</span> <span class="st">"Coffee, green"</span>,</span>
+<span>rank_filter <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,</span>
+<span>year_filter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2021</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">coffee_data</span></span>
+<span><span class="co">#&gt;    rank      area          item year production area_harvested yield</span></span>
+<span><span class="co">#&gt; 1     1    Brazil Coffee, green 2021  2993780.0        1836741  1.63</span></span>
+<span><span class="co">#&gt; 2     2  Viet Nam Coffee, green 2021  1845033.0         653192  2.82</span></span>
+<span><span class="co">#&gt; 3     3 Indonesia Coffee, green 2021   765415.0        1249615  0.61</span></span>
+<span><span class="co">#&gt; 4     4  Colombia Coffee, green 2021   560340.0         840112  0.67</span></span>
+<span><span class="co">#&gt; 5     5  Ethiopia Coffee, green 2021   456000.0         685294  0.67</span></span>
+<span><span class="co">#&gt; 6     6  Honduras Coffee, green 2021   400674.4         336318  1.19</span></span>
+<span><span class="co">#&gt; 7     7    Uganda Coffee, green 2021   374760.0         692553  0.54</span></span>
+<span><span class="co">#&gt; 8     8      Peru Coffee, green 2021   365582.1         454717  0.80</span></span>
+<span><span class="co">#&gt; 9     9     India Coffee, green 2021   334000.0         422924  0.79</span></span>
+<span><span class="co">#&gt; 10   10 Guatemala Coffee, green 2021   226700.0         363875  0.62</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">coffee_data</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 'data.frame':    10 obs. of  7 variables:</span></span>
+<span><span class="co">#&gt;  $ rank          : chr  "1" "2" "3" "4" ...</span></span>
+<span><span class="co">#&gt;  $ area          : Factor w/ 81 levels "Mauritius","Saint Lucia",..: 81 80 79 78 77 76 75 74 73 72</span></span>
+<span><span class="co">#&gt;  $ item          : chr  "Coffee, green" "Coffee, green" "Coffee, green" "Coffee, green" ...</span></span>
+<span><span class="co">#&gt;  $ year          : int  2021 2021 2021 2021 2021 2021 2021 2021 2021 2021</span></span>
+<span><span class="co">#&gt;  $ production    : num  2993780 1845033 765415 560340 456000 ...</span></span>
+<span><span class="co">#&gt;  $ area_harvested: num  1836741 653192 1249615 840112 685294 ...</span></span>
+<span><span class="co">#&gt;  $ yield         : num  1.63 2.82 0.61 0.67 0.67 1.19 0.54 0.8 0.79 0.62</span></span></code></pre></div>
+<p><strong>3/ Nếu bạn muốn trích xuất toàn bộ các quốc gia sản xuất nông
+sản thì ta dùng cách sau`</strong></p>
+<p>Trong ví dụ minh họa này mình dùng function
+<code><a href="../reference/extract_faostat.html">extract_faostat()</a></code> để trích xuất toàn bộ các quốc gia sản
+xuất đậu nành trên thế giới theo tất cả các năm trong bộ dataset này.
+Trên cơ sở dataset thu được bạn sẽ lọc tiếp ra các thông tin liên quan
+đến nhu cầu xử lý dữ liệu và vẽ đồ thị.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">soya_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extract_faostat.html">extract_faostat</a></span><span class="op">(</span>input_rds <span class="op">=</span> <span class="va">df_1</span>,</span>
+<span>                             input_region <span class="op">=</span> <span class="va">df_2</span>,</span>
+<span>                             input_item <span class="op">=</span> <span class="st">"Soya beans"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">soya_data</span>, n <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                        area       item year production area_harvested yield</span></span>
+<span><span class="co">#&gt; 1  United States of America Soya beans 2021  120707230       34937700  3.45</span></span>
+<span><span class="co">#&gt; 2  United States of America Soya beans 2020  114748940       33428610  3.43</span></span>
+<span><span class="co">#&gt; 3  United States of America Soya beans 2019   96667090       30327060  3.19</span></span>
+<span><span class="co">#&gt; 4  United States of America Soya beans 2018  120514490       35448420  3.40</span></span>
+<span><span class="co">#&gt; 5  United States of America Soya beans 2017  120064970       36236750  3.31</span></span>
+<span><span class="co">#&gt; 6  United States of America Soya beans 2016  116931500       33470290  3.49</span></span>
+<span><span class="co">#&gt; 7  United States of America Soya beans 2015  106953940       33123470  3.23</span></span>
+<span><span class="co">#&gt; 8  United States of America Soya beans 2014  106877870       33423750  3.20</span></span>
+<span><span class="co">#&gt; 9  United States of America Soya beans 2013   91389350       30858830  2.96</span></span>
+<span><span class="co">#&gt; 10 United States of America Soya beans 2012   82790870       30814720  2.69</span></span>
+<span><span class="co">#&gt; 11 United States of America Soya beans 2011   84291400       29856410  2.82</span></span>
+<span><span class="co">#&gt; 12 United States of America Soya beans 2010   90663290       31003300  2.92</span></span>
+<span><span class="co">#&gt; 13 United States of America Soya beans 2009   91469550       30906980  2.96</span></span>
+<span><span class="co">#&gt; 14 United States of America Soya beans 2008   80748700       30222650  2.67</span></span>
+<span><span class="co">#&gt; 15 United States of America Soya beans 2007   72859180       25959240  2.81</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="danh-sách-cây-trồng">Danh sách cây trồng<a class="anchor" aria-label="anchor" href="#danh-s%C3%A1ch-c%C3%A2y-tr%E1%BB%93ng"></a>
+</h2>
+<p>Dataset của FAOSTAT bao gồm các loại nông sản nhóm trồng trọt và chăn
+nuôi. Các function <code><a href="../reference/extract_faostat.html">extract_faostat()</a></code> và
+<code><a href="../reference/filter_faostat.html">filter_faostat()</a></code> được thiết kế để lọc dữ liệu trong nhóm
+trồng trọt (là các nông sản được ghi nhận sản lượng và diện tích canh
+tác). Đây là danh sách nhóm nông sản cây trồng giúp bạn tham khảo khi
+cần trích xuất loại cây trồng cụ thể.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">crop_full</span> <span class="op">&lt;-</span> <span class="va">df_1</span></span>
+<span><span class="va">ok</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">crop_full</span><span class="op">$</span><span class="va">item</span>, <span class="va">crop_full</span><span class="op">$</span><span class="va">element</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ok_1</span> <span class="op">&lt;-</span> <span class="va">ok</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">Freq</span> <span class="op">!=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">ok_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/reshape.html" class="external-link">reshape</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">ok_1</span>,</span>
+<span>                idvar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Var1"</span><span class="op">)</span>,</span>
+<span>                v.names <span class="op">=</span> <span class="st">"Freq"</span>,</span>
+<span>                timevar <span class="op">=</span> <span class="st">"Var2"</span>,</span>
+<span>                direction <span class="op">=</span> <span class="st">"wide"</span><span class="op">)</span></span>
+<span><span class="va">ok_2</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ok_2</span><span class="op">$</span><span class="va">Freq.area_harvested</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ok_2</span><span class="op">$</span><span class="va">Freq.production</span><span class="op">)</span>, <span class="op">]</span> <span class="op">-&gt;</span> <span class="va">ok_3</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">ok_3</span><span class="op">$</span><span class="va">Var1</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">crop_item</span></span>
+<span><span class="va">crop_item</span></span>
+<span><span class="co">#&gt;   [1] "Abaca, manila hemp, raw"                                                  </span></span>
+<span><span class="co">#&gt;   [2] "Agave fibres, raw, n.e.c."                                                </span></span>
+<span><span class="co">#&gt;   [3] "Almonds, in shell"                                                        </span></span>
+<span><span class="co">#&gt;   [4] "Anise, badian, coriander, cumin, caraway, fennel and juniper berries, raw"</span></span>
+<span><span class="co">#&gt;   [5] "Apples"                                                                   </span></span>
+<span><span class="co">#&gt;   [6] "Apricots"                                                                 </span></span>
+<span><span class="co">#&gt;   [7] "Areca nuts"                                                               </span></span>
+<span><span class="co">#&gt;   [8] "Artichokes"                                                               </span></span>
+<span><span class="co">#&gt;   [9] "Asparagus"                                                                </span></span>
+<span><span class="co">#&gt;  [10] "Avocados"                                                                 </span></span>
+<span><span class="co">#&gt;  [11] "Bambara beans, dry"                                                       </span></span>
+<span><span class="co">#&gt;  [12] "Bananas"                                                                  </span></span>
+<span><span class="co">#&gt;  [13] "Barley"                                                                   </span></span>
+<span><span class="co">#&gt;  [14] "Beans, dry"                                                               </span></span>
+<span><span class="co">#&gt;  [15] "Blueberries"                                                              </span></span>
+<span><span class="co">#&gt;  [16] "Brazil nuts, in shell"                                                    </span></span>
+<span><span class="co">#&gt;  [17] "Broad beans and horse beans, dry"                                         </span></span>
+<span><span class="co">#&gt;  [18] "Broad beans and horse beans, green"                                       </span></span>
+<span><span class="co">#&gt;  [19] "Buckwheat"                                                                </span></span>
+<span><span class="co">#&gt;  [20] "Cabbages"                                                                 </span></span>
+<span><span class="co">#&gt;  [21] "Canary seed"                                                              </span></span>
+<span><span class="co">#&gt;  [22] "Cantaloupes and other melons"                                             </span></span>
+<span><span class="co">#&gt;  [23] "Carrots and turnips"                                                      </span></span>
+<span><span class="co">#&gt;  [24] "Cashew nuts, in shell"                                                    </span></span>
+<span><span class="co">#&gt;  [25] "Cashewapple"                                                              </span></span>
+<span><span class="co">#&gt;  [26] "Cassava leaves"                                                           </span></span>
+<span><span class="co">#&gt;  [27] "Cassava, fresh"                                                           </span></span>
+<span><span class="co">#&gt;  [28] "Castor oil seeds"                                                         </span></span>
+<span><span class="co">#&gt;  [29] "Cauliflowers and broccoli"                                                </span></span>
+<span><span class="co">#&gt;  [30] "Cereals n.e.c."                                                           </span></span>
+<span><span class="co">#&gt;  [31] "Cereals, primary"                                                         </span></span>
+<span><span class="co">#&gt;  [32] "Cherries"                                                                 </span></span>
+<span><span class="co">#&gt;  [33] "Chestnuts, in shell"                                                      </span></span>
+<span><span class="co">#&gt;  [34] "Chick peas, dry"                                                          </span></span>
+<span><span class="co">#&gt;  [35] "Chicory roots"                                                            </span></span>
+<span><span class="co">#&gt;  [36] "Chillies and peppers, dry (Capsicum spp., Pimenta spp.), raw"             </span></span>
+<span><span class="co">#&gt;  [37] "Chillies and peppers, green (Capsicum spp. and Pimenta spp.)"             </span></span>
+<span><span class="co">#&gt;  [38] "Cinnamon and cinnamon-tree flowers, raw"                                  </span></span>
+<span><span class="co">#&gt;  [39] "Citrus Fruit, Total"                                                      </span></span>
+<span><span class="co">#&gt;  [40] "Cloves (whole stems), raw"                                                </span></span>
+<span><span class="co">#&gt;  [41] "Cocoa beans"                                                              </span></span>
+<span><span class="co">#&gt;  [42] "Coconuts, in shell"                                                       </span></span>
+<span><span class="co">#&gt;  [43] "Coffee, green"                                                            </span></span>
+<span><span class="co">#&gt;  [44] "Coir, raw"                                                                </span></span>
+<span><span class="co">#&gt;  [45] "Cow peas, dry"                                                            </span></span>
+<span><span class="co">#&gt;  [46] "Cranberries"                                                              </span></span>
+<span><span class="co">#&gt;  [47] "Cucumbers and gherkins"                                                   </span></span>
+<span><span class="co">#&gt;  [48] "Currants"                                                                 </span></span>
+<span><span class="co">#&gt;  [49] "Dates"                                                                    </span></span>
+<span><span class="co">#&gt;  [50] "Edible roots and tubers with high starch or inulin content, n.e.c., fresh"</span></span>
+<span><span class="co">#&gt;  [51] "Eggplants (aubergines)"                                                   </span></span>
+<span><span class="co">#&gt;  [52] "Fibre Crops, Fibre Equivalent"                                            </span></span>
+<span><span class="co">#&gt;  [53] "Figs"                                                                     </span></span>
+<span><span class="co">#&gt;  [54] "Flax, processed but not spun"                                             </span></span>
+<span><span class="co">#&gt;  [55] "Fonio"                                                                    </span></span>
+<span><span class="co">#&gt;  [56] "Fruit Primary"                                                            </span></span>
+<span><span class="co">#&gt;  [57] "Ginger, raw"                                                              </span></span>
+<span><span class="co">#&gt;  [58] "Gooseberries"                                                             </span></span>
+<span><span class="co">#&gt;  [59] "Grapes"                                                                   </span></span>
+<span><span class="co">#&gt;  [60] "Green corn (maize)"                                                       </span></span>
+<span><span class="co">#&gt;  [61] "Green garlic"                                                             </span></span>
+<span><span class="co">#&gt;  [62] "Groundnuts, excluding shelled"                                            </span></span>
+<span><span class="co">#&gt;  [63] "Hazelnuts, in shell"                                                      </span></span>
+<span><span class="co">#&gt;  [64] "Hempseed"                                                                 </span></span>
+<span><span class="co">#&gt;  [65] "Hop cones"                                                                </span></span>
+<span><span class="co">#&gt;  [66] "Jojoba seeds"                                                             </span></span>
+<span><span class="co">#&gt;  [67] "Jute, raw or retted"                                                      </span></span>
+<span><span class="co">#&gt;  [68] "Kapok fruit"                                                              </span></span>
+<span><span class="co">#&gt;  [69] "Karite nuts (sheanuts)"                                                   </span></span>
+<span><span class="co">#&gt;  [70] "Kenaf, and other textile bast fibres, raw or retted"                      </span></span>
+<span><span class="co">#&gt;  [71] "Kiwi fruit"                                                               </span></span>
+<span><span class="co">#&gt;  [72] "Kola nuts"                                                                </span></span>
+<span><span class="co">#&gt;  [73] "Leeks and other alliaceous vegetables"                                    </span></span>
+<span><span class="co">#&gt;  [74] "Lemons and limes"                                                         </span></span>
+<span><span class="co">#&gt;  [75] "Lentils, dry"                                                             </span></span>
+<span><span class="co">#&gt;  [76] "Lettuce and chicory"                                                      </span></span>
+<span><span class="co">#&gt;  [77] "Linseed"                                                                  </span></span>
+<span><span class="co">#&gt;  [78] "Locust beans (carobs)"                                                    </span></span>
+<span><span class="co">#&gt;  [79] "Lupins"                                                                   </span></span>
+<span><span class="co">#&gt;  [80] "Maize (corn)"                                                             </span></span>
+<span><span class="co">#&gt;  [81] "Mangoes, guavas and mangosteens"                                          </span></span>
+<span><span class="co">#&gt;  [82] "Maté leaves"                                                              </span></span>
+<span><span class="co">#&gt;  [83] "Melonseed"                                                                </span></span>
+<span><span class="co">#&gt;  [84] "Millet"                                                                   </span></span>
+<span><span class="co">#&gt;  [85] "Mixed grain"                                                              </span></span>
+<span><span class="co">#&gt;  [86] "Mushrooms and truffles"                                                   </span></span>
+<span><span class="co">#&gt;  [87] "Mustard seed"                                                             </span></span>
+<span><span class="co">#&gt;  [88] "Natural rubber in primary forms"                                          </span></span>
+<span><span class="co">#&gt;  [89] "Nutmeg, mace, cardamoms, raw"                                             </span></span>
+<span><span class="co">#&gt;  [90] "Oats"                                                                     </span></span>
+<span><span class="co">#&gt;  [91] "Oil palm fruit"                                                           </span></span>
+<span><span class="co">#&gt;  [92] "Oilcrops, Cake Equivalent"                                                </span></span>
+<span><span class="co">#&gt;  [93] "Oilcrops, Oil Equivalent"                                                 </span></span>
+<span><span class="co">#&gt;  [94] "Okra"                                                                     </span></span>
+<span><span class="co">#&gt;  [95] "Olives"                                                                   </span></span>
+<span><span class="co">#&gt;  [96] "Onions and shallots, dry (excluding dehydrated)"                          </span></span>
+<span><span class="co">#&gt;  [97] "Onions and shallots, green"                                               </span></span>
+<span><span class="co">#&gt;  [98] "Oranges"                                                                  </span></span>
+<span><span class="co">#&gt;  [99] "Other beans, green"                                                       </span></span>
+<span><span class="co">#&gt; [100] "Other berries and fruits of the genus vaccinium n.e.c."                   </span></span>
+<span><span class="co">#&gt; [101] "Other citrus fruit, n.e.c."                                               </span></span>
+<span><span class="co">#&gt; [102] "Other fibre crops, raw, n.e.c."                                           </span></span>
+<span><span class="co">#&gt; [103] "Other fruits, n.e.c."                                                     </span></span>
+<span><span class="co">#&gt; [104] "Other nuts (excluding wild edible nuts and groundnuts), in shell, n.e.c." </span></span>
+<span><span class="co">#&gt; [105] "Other oil seeds, n.e.c."                                                  </span></span>
+<span><span class="co">#&gt; [106] "Other pome fruits"                                                        </span></span>
+<span><span class="co">#&gt; [107] "Other pulses n.e.c."                                                      </span></span>
+<span><span class="co">#&gt; [108] "Other stimulant, spice and aromatic crops, n.e.c."                        </span></span>
+<span><span class="co">#&gt; [109] "Other stone fruits"                                                       </span></span>
+<span><span class="co">#&gt; [110] "Other sugar crops n.e.c."                                                 </span></span>
+<span><span class="co">#&gt; [111] "Other tropical fruits, n.e.c."                                            </span></span>
+<span><span class="co">#&gt; [112] "Other vegetables, fresh n.e.c."                                           </span></span>
+<span><span class="co">#&gt; [113] "Papayas"                                                                  </span></span>
+<span><span class="co">#&gt; [114] "Peaches and nectarines"                                                   </span></span>
+<span><span class="co">#&gt; [115] "Pears"                                                                    </span></span>
+<span><span class="co">#&gt; [116] "Peas, dry"                                                                </span></span>
+<span><span class="co">#&gt; [117] "Peas, green"                                                              </span></span>
+<span><span class="co">#&gt; [118] "Pepper (Piper spp.), raw"                                                 </span></span>
+<span><span class="co">#&gt; [119] "Peppermint, spearmint"                                                    </span></span>
+<span><span class="co">#&gt; [120] "Persimmons"                                                               </span></span>
+<span><span class="co">#&gt; [121] "Pigeon peas, dry"                                                         </span></span>
+<span><span class="co">#&gt; [122] "Pineapples"                                                               </span></span>
+<span><span class="co">#&gt; [123] "Pistachios, in shell"                                                     </span></span>
+<span><span class="co">#&gt; [124] "Plantains and cooking bananas"                                            </span></span>
+<span><span class="co">#&gt; [125] "Plums and sloes"                                                          </span></span>
+<span><span class="co">#&gt; [126] "Pomelos and grapefruits"                                                  </span></span>
+<span><span class="co">#&gt; [127] "Poppy seed"                                                               </span></span>
+<span><span class="co">#&gt; [128] "Potatoes"                                                                 </span></span>
+<span><span class="co">#&gt; [129] "Pulses, Total"                                                            </span></span>
+<span><span class="co">#&gt; [130] "Pumpkins, squash and gourds"                                              </span></span>
+<span><span class="co">#&gt; [131] "Pyrethrum, dried flowers"                                                 </span></span>
+<span><span class="co">#&gt; [132] "Quinces"                                                                  </span></span>
+<span><span class="co">#&gt; [133] "Quinoa"                                                                   </span></span>
+<span><span class="co">#&gt; [134] "Ramie, raw or retted"                                                     </span></span>
+<span><span class="co">#&gt; [135] "Rape or colza seed"                                                       </span></span>
+<span><span class="co">#&gt; [136] "Raspberries"                                                              </span></span>
+<span><span class="co">#&gt; [137] "Rice"                                                                     </span></span>
+<span><span class="co">#&gt; [138] "Roots and Tubers, Total"                                                  </span></span>
+<span><span class="co">#&gt; [139] "Rye"                                                                      </span></span>
+<span><span class="co">#&gt; [140] "Safflower seed"                                                           </span></span>
+<span><span class="co">#&gt; [141] "Seed cotton, unginned"                                                    </span></span>
+<span><span class="co">#&gt; [142] "Sesame seed"                                                              </span></span>
+<span><span class="co">#&gt; [143] "Sisal, raw"                                                               </span></span>
+<span><span class="co">#&gt; [144] "Sorghum"                                                                  </span></span>
+<span><span class="co">#&gt; [145] "Sour cherries"                                                            </span></span>
+<span><span class="co">#&gt; [146] "Soya beans"                                                               </span></span>
+<span><span class="co">#&gt; [147] "Spinach"                                                                  </span></span>
+<span><span class="co">#&gt; [148] "Strawberries"                                                             </span></span>
+<span><span class="co">#&gt; [149] "String beans"                                                             </span></span>
+<span><span class="co">#&gt; [150] "Sugar beet"                                                               </span></span>
+<span><span class="co">#&gt; [151] "Sugar cane"                                                               </span></span>
+<span><span class="co">#&gt; [152] "Sugar Crops Primary"                                                      </span></span>
+<span><span class="co">#&gt; [153] "Sunflower seed"                                                           </span></span>
+<span><span class="co">#&gt; [154] "Sweet potatoes"                                                           </span></span>
+<span><span class="co">#&gt; [155] "Tallowtree seeds"                                                         </span></span>
+<span><span class="co">#&gt; [156] "Tangerines, mandarins, clementines"                                       </span></span>
+<span><span class="co">#&gt; [157] "Taro"                                                                     </span></span>
+<span><span class="co">#&gt; [158] "Tea leaves"                                                               </span></span>
+<span><span class="co">#&gt; [159] "Tomatoes"                                                                 </span></span>
+<span><span class="co">#&gt; [160] "Treenuts, Total"                                                          </span></span>
+<span><span class="co">#&gt; [161] "Triticale"                                                                </span></span>
+<span><span class="co">#&gt; [162] "True hemp, raw or retted"                                                 </span></span>
+<span><span class="co">#&gt; [163] "Tung nuts"                                                                </span></span>
+<span><span class="co">#&gt; [164] "Unmanufactured tobacco"                                                   </span></span>
+<span><span class="co">#&gt; [165] "Vanilla, raw"                                                             </span></span>
+<span><span class="co">#&gt; [166] "Vegetables Primary"                                                       </span></span>
+<span><span class="co">#&gt; [167] "Vetches"                                                                  </span></span>
+<span><span class="co">#&gt; [168] "Walnuts, in shell"                                                        </span></span>
+<span><span class="co">#&gt; [169] "Watermelons"                                                              </span></span>
+<span><span class="co">#&gt; [170] "Wheat"                                                                    </span></span>
+<span><span class="co">#&gt; [171] "Yams"                                                                     </span></span>
+<span><span class="co">#&gt; [172] "Yautia"</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="ứng-dụng-để-vẽ-đồ-thị-nhanh-chóng">Ứng dụng để vẽ đồ thị nhanh chóng<a class="anchor" aria-label="anchor" href="#%E1%BB%A9ng-d%E1%BB%A5ng-%C4%91%E1%BB%83-v%E1%BA%BD-%C4%91%E1%BB%93-th%E1%BB%8B-nhanh-ch%C3%B3ng"></a>
+</h2>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">coffee_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_faostat.html">filter_faostat</a></span><span class="op">(</span>data_rds <span class="op">=</span> <span class="va">df_1</span>,</span>
+<span>                              data_region <span class="op">=</span> <span class="va">df_2</span>,</span>
+<span>                              item_filter <span class="op">=</span> <span class="st">"Coffee, green"</span>,</span>
+<span>                              rank_filter <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,</span>
+<span>                              year_filter <span class="op">=</span> <span class="fl">2021</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## vì kết quả trả về ở dạng factor cho danh sách các quốc gia</span></span>
+<span><span class="co">## bạn cần reset lại giá trị factor này để reorder lại theo đúng ý bạn muốn</span></span>
+<span><span class="co">## giúp việc vẽ đồ thị được thuận lợi.</span></span>
+<span></span>
+<span><span class="va">coffee_data</span><span class="op">$</span><span class="va">area</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">coffee_data</span><span class="op">$</span><span class="va">area</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">coffee_data</span><span class="op">$</span><span class="va">area</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html" class="external-link">reorder</a></span><span class="op">(</span><span class="va">coffee_data</span><span class="op">$</span><span class="va">area</span>, <span class="va">coffee_data</span><span class="op">$</span><span class="va">production</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">coffee_data</span><span class="op">$</span><span class="va">production</span> <span class="op">&lt;-</span> <span class="va">coffee_data</span><span class="op">$</span><span class="va">production</span> <span class="op">/</span> <span class="fl">1000000</span></span>
+<span></span>
+<span><span class="va">label</span> <span class="op">&lt;-</span> <span class="va">coffee_data</span><span class="op">$</span><span class="va">production</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">label</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">coffee_data</span><span class="op">$</span><span class="va">area</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">label</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">label</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>cex <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>font.axis <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>font.lab <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span><span class="va">production</span> <span class="op">~</span> <span class="va">area</span>,</span>
+<span>             <span class="va">coffee_data</span>,</span>
+<span>             xaxs <span class="op">=</span> <span class="st">"i"</span>,</span>
+<span>             yaxs <span class="op">=</span> <span class="st">"i"</span>,</span>
+<span>             las <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>             xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span>,</span>
+<span>             ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">4</span><span class="op">)</span>,</span>
+<span>             width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>             space <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>             beside <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>             horiz <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>             xlab <span class="op">=</span> <span class="st">""</span>,</span>
+<span>             ylab <span class="op">=</span> <span class="st">"Sản lượng (triệu tấn)"</span>,</span>
+<span>             col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">terrain.colors</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
+<span>             border <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">b</span>, <span class="va">label</span> <span class="op">+</span> <span class="fl">0.2</span>, <span class="va">label</span>, font <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Top 10 quốc gia sản xuất cà phê trên thế giới năm 2021 "</span><span class="op">)</span></span></code></pre></div>
+<p><img src="filter_faostat_files/figure-html/unnamed-chunk-6-1.png" width="864"></p>
+</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

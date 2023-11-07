@@ -1,5 +1,7 @@
 ---
 title: "Hướng dẫn trích xuất dữ liệu nông sản từ FAOSTAT"
+author: "Duc Nguyen"
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Hướng dẫn trích xuất dữ liệu nông sản từ FAOSTAT}
@@ -15,7 +17,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Cách trích xuất dữ liệu
+## Quy trình trích xuất dữ liệu từ FAOSTAT
 
 Thông thường để trích xuất dữ liệu nông sản từ FAOSTAT, bạn sẽ lên trực tiếp trang web `https://www.fao.org/faostat/en/` và tải về dataset liên quan cũng như sử dụng các công cụ lọc dữ liệu và vẽ đồ thị được cung cấp sẵn trên website.
 
@@ -127,6 +129,10 @@ coffee_data <- filter_faostat(data_rds = df_1,
                               rank_filter = 1:10,
                               year_filter = 2021)
 
+## vì kết quả trả về ở dạng factor cho danh sách các quốc gia
+## bạn cần reset lại giá trị factor này để reorder lại theo đúng ý bạn muốn
+## giúp việc vẽ đồ thị được thuận lợi.
+
 coffee_data$area <- as.character(coffee_data$area)
 
 coffee_data$area <- reorder(coffee_data$area, coffee_data$production, decreasing = TRUE)
@@ -164,16 +170,6 @@ text(b, label + 0.2, label, font = 2, col = "black")
 
 title(main = "Top 10 quốc gia sản xuất cà phê trên thế giới năm 2021 ")
 ```
-
-
-## Lưu ý khi sử dụng
-
-Package này sử dụng giấy phép bản quyền GPL/GNU...
-
-Trích dẫn...
-
-
-
 
 
 
