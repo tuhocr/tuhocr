@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Duc Nguyen" />
+
+<meta name="date" content="2023-11-08" />
+
+<title>Hướng dẫn trích xuất dữ liệu nông sản từ FAOSTAT</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Hướng dẫn trích xuất dữ liệu nông sản từ
+FAOSTAT</h1>
+<h4 class="author">Duc Nguyen</h4>
+<h4 class="date">2023-11-08</h4>
+
+
+
+<div id="quy-trình-trích-xuất-dữ-liệu-từ-faostat" class="section level2">
+<h2>Quy trình trích xuất dữ liệu từ FAOSTAT</h2>
+<p>Thông thường để trích xuất dữ liệu nông sản từ FAOSTAT, bạn sẽ lên
+trực tiếp trang web <code>https://www.fao.org/faostat/en/</code> và tải
+về dataset liên quan cũng như sử dụng các công cụ lọc dữ liệu và vẽ đồ
+thị được cung cấp sẵn trên website.</p>
+<p>Để thực hiện việc này nhanh gọn trong R thì bạn cần các bước sau:</p>
+<p><strong>1/ Bạn sử dụng package <code>FAOSTAT</code> để download tự
+động dataset R về máy tính.</strong></p>
+<ul>
+<li>download dataset mã <code>QCL</code> dành cho nông sản</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># install.packages(&quot;FAOSTAT&quot;)</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="co"># library(FAOSTAT)</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co"># search_dataset(dataset_code = &quot;QCL&quot;,</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co">#                latest = TRUE, </span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co">#                reset_cache = FALSE)</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co"># crop_production &lt;- get_faostat_bulk(code = &quot;QCL&quot;, </span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co">#                                     data_folder = &quot;./&quot;)</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="co"># bạn có thể lưu file này ra dạng .RDS để sau này đọc lại từ R sẽ nhanh hơn,</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="co"># không cần download lại từ FAOSTAT.</span></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="co"># saveRDS(crop_production, &quot;crop_production.rds&quot;)</span></span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="co"># crop_production &lt;- readRDS(&quot;crop_production.rds&quot;)</span></span></code></pre></div>
+<ul>
+<li>download file csv chứa danh sách quốc gia và vùng lãnh thổ</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># chọn Country/Region ở link này https://www.fao.org/faostat/en/#definitions</span></span></code></pre></div>
+<p><strong>2/ Import 2 file ở trên vào R và sử dụng function để trích
+xuất dữ liệu.</strong></p>
+<p>Khi bạn download package <code>tuhocr</code> về máy tính thì mình đã
+để sẵn 2 file <code>crop_production_all_data.rds</code> và
+<code>FAOSTAT_data_3-21-2023.csv</code> ở thời điểm tháng 3/2023 rồi, vì
+vậy bạn có thể dùng các file này để trích xuất dữ liệu.</p>
+<p>Trong ví dụ minh họa này mình dùng function
+<code>filter_faostat()</code> để trích xuất ra 10 quốc gia sản xuất cà
+phê nhiều nhất trên thế giới năm 2021. Tham số <code>rank_filter</code>
+và <code>year_filter</code> được thiết kế để lọc dữ liệu theo thứ hạng
+và theo các mốc thời gian khác nhau tùy vào nhu cầu phân tích dữ
+liệu.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># df_1 &lt;- readRDS(&quot;crop_production.rds&quot;)</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co"># df_2 &lt;- read.csv(&quot;FAOSTAT_data_2023.csv&quot;)</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>crop_production <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>                               <span class="st">&quot;crop_production_all_data.rds&quot;</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>                               <span class="at">package =</span> <span class="st">&quot;tuhocr&quot;</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>df_1 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(crop_production)</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>FAOSTAT_data_2023 <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>                                 <span class="st">&quot;FAOSTAT_data_3-21-2023.csv&quot;</span>, </span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>                                 <span class="at">package =</span> <span class="st">&quot;tuhocr&quot;</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>df_2 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(FAOSTAT_data_2023)</span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="fu">library</span>(tuhocr)</span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co"># Thực hiện dòng lệnh sẽ thu được danh sách các quốc gia</span></span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co"># sản xuất cà phê trên thế giới được sắp xếp theo</span></span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="co"># thứ hạng và năm.</span></span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a>coffee_data <span class="ot">&lt;-</span> <span class="fu">filter_faostat</span>(<span class="at">data_rds =</span> df_1,</span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a><span class="at">data_region =</span> df_2,</span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a><span class="at">item_filter =</span> <span class="st">&quot;Coffee, green&quot;</span>,</span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a><span class="at">rank_filter =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,</span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a><span class="at">year_filter =</span> <span class="fu">c</span>(<span class="dv">2021</span>))</span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a>coffee_data</span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a><span class="co">#&gt;    rank      area          item year production area_harvested yield</span></span>
+<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a><span class="co">#&gt; 1     1    Brazil Coffee, green 2021  2993780.0        1836741  1.63</span></span>
+<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a><span class="co">#&gt; 2     2  Viet Nam Coffee, green 2021  1845033.0         653192  2.82</span></span>
+<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a><span class="co">#&gt; 3     3 Indonesia Coffee, green 2021   765415.0        1249615  0.61</span></span>
+<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a><span class="co">#&gt; 4     4  Colombia Coffee, green 2021   560340.0         840112  0.67</span></span>
+<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a><span class="co">#&gt; 5     5  Ethiopia Coffee, green 2021   456000.0         685294  0.67</span></span>
+<span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a><span class="co">#&gt; 6     6  Honduras Coffee, green 2021   400674.4         336318  1.19</span></span>
+<span id="cb3-36"><a href="#cb3-36" tabindex="-1"></a><span class="co">#&gt; 7     7    Uganda Coffee, green 2021   374760.0         692553  0.54</span></span>
+<span id="cb3-37"><a href="#cb3-37" tabindex="-1"></a><span class="co">#&gt; 8     8      Peru Coffee, green 2021   365582.1         454717  0.80</span></span>
+<span id="cb3-38"><a href="#cb3-38" tabindex="-1"></a><span class="co">#&gt; 9     9     India Coffee, green 2021   334000.0         422924  0.79</span></span>
+<span id="cb3-39"><a href="#cb3-39" tabindex="-1"></a><span class="co">#&gt; 10   10 Guatemala Coffee, green 2021   226700.0         363875  0.62</span></span>
+<span id="cb3-40"><a href="#cb3-40" tabindex="-1"></a><span class="fu">str</span>(coffee_data)</span>
+<span id="cb3-41"><a href="#cb3-41" tabindex="-1"></a><span class="co">#&gt; &#39;data.frame&#39;:    10 obs. of  7 variables:</span></span>
+<span id="cb3-42"><a href="#cb3-42" tabindex="-1"></a><span class="co">#&gt;  $ rank          : chr  &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; ...</span></span>
+<span id="cb3-43"><a href="#cb3-43" tabindex="-1"></a><span class="co">#&gt;  $ area          : Factor w/ 81 levels &quot;Mauritius&quot;,&quot;Saint Lucia&quot;,..: 81 80 79 78 77 76 75 74 73 72</span></span>
+<span id="cb3-44"><a href="#cb3-44" tabindex="-1"></a><span class="co">#&gt;  $ item          : chr  &quot;Coffee, green&quot; &quot;Coffee, green&quot; &quot;Coffee, green&quot; &quot;Coffee, green&quot; ...</span></span>
+<span id="cb3-45"><a href="#cb3-45" tabindex="-1"></a><span class="co">#&gt;  $ year          : int  2021 2021 2021 2021 2021 2021 2021 2021 2021 2021</span></span>
+<span id="cb3-46"><a href="#cb3-46" tabindex="-1"></a><span class="co">#&gt;  $ production    : num  2993780 1845033 765415 560340 456000 ...</span></span>
+<span id="cb3-47"><a href="#cb3-47" tabindex="-1"></a><span class="co">#&gt;  $ area_harvested: num  1836741 653192 1249615 840112 685294 ...</span></span>
+<span id="cb3-48"><a href="#cb3-48" tabindex="-1"></a><span class="co">#&gt;  $ yield         : num  1.63 2.82 0.61 0.67 0.67 1.19 0.54 0.8 0.79 0.62</span></span></code></pre></div>
+<p><strong>3/ Nếu bạn muốn trích xuất toàn bộ các quốc gia sản xuất nông
+sản thì ta dùng cách sau`</strong></p>
+<p>Trong ví dụ minh họa này mình dùng function
+<code>extract_faostat()</code> để trích xuất toàn bộ các quốc gia sản
+xuất đậu nành trên thế giới theo tất cả các năm trong bộ dataset này.
+Trên cơ sở dataset thu được bạn sẽ lọc tiếp ra các thông tin liên quan
+đến nhu cầu xử lý dữ liệu và vẽ đồ thị.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>soya_data <span class="ot">&lt;-</span> <span class="fu">extract_faostat</span>(<span class="at">input_rds =</span> df_1,</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>                             <span class="at">input_region =</span> df_2,</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>                             <span class="at">input_item =</span> <span class="st">&quot;Soya beans&quot;</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="fu">head</span>(soya_data, <span class="at">n =</span> <span class="dv">15</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt;                        area       item year production area_harvested yield</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; 1  United States of America Soya beans 2021  120707230       34937700  3.45</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; 2  United States of America Soya beans 2020  114748940       33428610  3.43</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; 3  United States of America Soya beans 2019   96667090       30327060  3.19</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt; 4  United States of America Soya beans 2018  120514490       35448420  3.40</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt; 5  United States of America Soya beans 2017  120064970       36236750  3.31</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt; 6  United States of America Soya beans 2016  116931500       33470290  3.49</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt; 7  United States of America Soya beans 2015  106953940       33123470  3.23</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt; 8  United States of America Soya beans 2014  106877870       33423750  3.20</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; 9  United States of America Soya beans 2013   91389350       30858830  2.96</span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt; 10 United States of America Soya beans 2012   82790870       30814720  2.69</span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; 11 United States of America Soya beans 2011   84291400       29856410  2.82</span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt; 12 United States of America Soya beans 2010   90663290       31003300  2.92</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt; 13 United States of America Soya beans 2009   91469550       30906980  2.96</span></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co">#&gt; 14 United States of America Soya beans 2008   80748700       30222650  2.67</span></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co">#&gt; 15 United States of America Soya beans 2007   72859180       25959240  2.81</span></span></code></pre></div>
+</div>
+<div id="danh-sách-cây-trồng" class="section level2">
+<h2>Danh sách cây trồng</h2>
+<p>Dataset của FAOSTAT bao gồm các loại nông sản nhóm trồng trọt và chăn
+nuôi. Các function <code>extract_faostat()</code> và
+<code>filter_faostat()</code> được thiết kế để lọc dữ liệu trong nhóm
+trồng trọt (là các nông sản được ghi nhận sản lượng và diện tích canh
+tác). Đây là danh sách nhóm nông sản cây trồng giúp bạn tham khảo khi
+cần trích xuất loại cây trồng cụ thể.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>crop_full <span class="ot">&lt;-</span> df_1</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>ok <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">table</span>(crop_full<span class="sc">$</span>item, crop_full<span class="sc">$</span>element))</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>ok_1 <span class="ot">&lt;-</span> ok <span class="sc">|&gt;</span> <span class="fu">subset</span>(Freq <span class="sc">!=</span> <span class="dv">0</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>ok_2 <span class="ot">&lt;-</span> <span class="fu">reshape</span>(<span class="at">data =</span> ok_1,</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>                <span class="at">idvar =</span> <span class="fu">c</span>(<span class="st">&quot;Var1&quot;</span>),</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>                <span class="at">v.names =</span> <span class="st">&quot;Freq&quot;</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>                <span class="at">timevar =</span> <span class="st">&quot;Var2&quot;</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>                <span class="at">direction =</span> <span class="st">&quot;wide&quot;</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>ok_2[<span class="sc">!</span><span class="fu">is.na</span>(ok_2<span class="sc">$</span>Freq.area_harvested) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(ok_2<span class="sc">$</span>Freq.production), ] <span class="ot">-&gt;</span> ok_3</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="fu">as.character</span>(ok_3<span class="sc">$</span>Var1) <span class="ot">-&gt;</span> crop_item</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>crop_item</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt;   [1] &quot;Abaca, manila hemp, raw&quot;                                                  </span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt;   [2] &quot;Agave fibres, raw, n.e.c.&quot;                                                </span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt;   [3] &quot;Almonds, in shell&quot;                                                        </span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt;   [4] &quot;Anise, badian, coriander, cumin, caraway, fennel and juniper berries, raw&quot;</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt;   [5] &quot;Apples&quot;                                                                   </span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#&gt;   [6] &quot;Apricots&quot;                                                                 </span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co">#&gt;   [7] &quot;Areca nuts&quot;                                                               </span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="co">#&gt;   [8] &quot;Artichokes&quot;                                                               </span></span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="co">#&gt;   [9] &quot;Asparagus&quot;                                                                </span></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="co">#&gt;  [10] &quot;Avocados&quot;                                                                 </span></span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="co">#&gt;  [11] &quot;Bambara beans, dry&quot;                                                       </span></span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a><span class="co">#&gt;  [12] &quot;Bananas&quot;                                                                  </span></span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a><span class="co">#&gt;  [13] &quot;Barley&quot;                                                                   </span></span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a><span class="co">#&gt;  [14] &quot;Beans, dry&quot;                                                               </span></span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a><span class="co">#&gt;  [15] &quot;Blueberries&quot;                                                              </span></span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a><span class="co">#&gt;  [16] &quot;Brazil nuts, in shell&quot;                                                    </span></span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a><span class="co">#&gt;  [17] &quot;Broad beans and horse beans, dry&quot;                                         </span></span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a><span class="co">#&gt;  [18] &quot;Broad beans and horse beans, green&quot;                                       </span></span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a><span class="co">#&gt;  [19] &quot;Buckwheat&quot;                                                                </span></span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a><span class="co">#&gt;  [20] &quot;Cabbages&quot;                                                                 </span></span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a><span class="co">#&gt;  [21] &quot;Canary seed&quot;                                                              </span></span>
+<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a><span class="co">#&gt;  [22] &quot;Cantaloupes and other melons&quot;                                             </span></span>
+<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a><span class="co">#&gt;  [23] &quot;Carrots and turnips&quot;                                                      </span></span>
+<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a><span class="co">#&gt;  [24] &quot;Cashew nuts, in shell&quot;                                                    </span></span>
+<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a><span class="co">#&gt;  [25] &quot;Cashewapple&quot;                                                              </span></span>
+<span id="cb5-37"><a href="#cb5-37" tabindex="-1"></a><span class="co">#&gt;  [26] &quot;Cassava leaves&quot;                                                           </span></span>
+<span id="cb5-38"><a href="#cb5-38" tabindex="-1"></a><span class="co">#&gt;  [27] &quot;Cassava, fresh&quot;                                                           </span></span>
+<span id="cb5-39"><a href="#cb5-39" tabindex="-1"></a><span class="co">#&gt;  [28] &quot;Castor oil seeds&quot;                                                         </span></span>
+<span id="cb5-40"><a href="#cb5-40" tabindex="-1"></a><span class="co">#&gt;  [29] &quot;Cauliflowers and broccoli&quot;                                                </span></span>
+<span id="cb5-41"><a href="#cb5-41" tabindex="-1"></a><span class="co">#&gt;  [30] &quot;Cereals n.e.c.&quot;                                                           </span></span>
+<span id="cb5-42"><a href="#cb5-42" tabindex="-1"></a><span class="co">#&gt;  [31] &quot;Cereals, primary&quot;                                                         </span></span>
+<span id="cb5-43"><a href="#cb5-43" tabindex="-1"></a><span class="co">#&gt;  [32] &quot;Cherries&quot;                                                                 </span></span>
+<span id="cb5-44"><a href="#cb5-44" tabindex="-1"></a><span class="co">#&gt;  [33] &quot;Chestnuts, in shell&quot;                                                      </span></span>
+<span id="cb5-45"><a href="#cb5-45" tabindex="-1"></a><span class="co">#&gt;  [34] &quot;Chick peas, dry&quot;                                                          </span></span>
+<span id="cb5-46"><a href="#cb5-46" tabindex="-1"></a><span class="co">#&gt;  [35] &quot;Chicory roots&quot;                                                            </span></span>
+<span id="cb5-47"><a href="#cb5-47" tabindex="-1"></a><span class="co">#&gt;  [36] &quot;Chillies and peppers, dry (Capsicum spp., Pimenta spp.), raw&quot;             </span></span>
+<span id="cb5-48"><a href="#cb5-48" tabindex="-1"></a><span class="co">#&gt;  [37] &quot;Chillies and peppers, green (Capsicum spp. and Pimenta spp.)&quot;             </span></span>
+<span id="cb5-49"><a href="#cb5-49" tabindex="-1"></a><span class="co">#&gt;  [38] &quot;Cinnamon and cinnamon-tree flowers, raw&quot;                                  </span></span>
+<span id="cb5-50"><a href="#cb5-50" tabindex="-1"></a><span class="co">#&gt;  [39] &quot;Citrus Fruit, Total&quot;                                                      </span></span>
+<span id="cb5-51"><a href="#cb5-51" tabindex="-1"></a><span class="co">#&gt;  [40] &quot;Cloves (whole stems), raw&quot;                                                </span></span>
+<span id="cb5-52"><a href="#cb5-52" tabindex="-1"></a><span class="co">#&gt;  [41] &quot;Cocoa beans&quot;                                                              </span></span>
+<span id="cb5-53"><a href="#cb5-53" tabindex="-1"></a><span class="co">#&gt;  [42] &quot;Coconuts, in shell&quot;                                                       </span></span>
+<span id="cb5-54"><a href="#cb5-54" tabindex="-1"></a><span class="co">#&gt;  [43] &quot;Coffee, green&quot;                                                            </span></span>
+<span id="cb5-55"><a href="#cb5-55" tabindex="-1"></a><span class="co">#&gt;  [44] &quot;Coir, raw&quot;                                                                </span></span>
+<span id="cb5-56"><a href="#cb5-56" tabindex="-1"></a><span class="co">#&gt;  [45] &quot;Cow peas, dry&quot;                                                            </span></span>
+<span id="cb5-57"><a href="#cb5-57" tabindex="-1"></a><span class="co">#&gt;  [46] &quot;Cranberries&quot;                                                              </span></span>
+<span id="cb5-58"><a href="#cb5-58" tabindex="-1"></a><span class="co">#&gt;  [47] &quot;Cucumbers and gherkins&quot;                                                   </span></span>
+<span id="cb5-59"><a href="#cb5-59" tabindex="-1"></a><span class="co">#&gt;  [48] &quot;Currants&quot;                                                                 </span></span>
+<span id="cb5-60"><a href="#cb5-60" tabindex="-1"></a><span class="co">#&gt;  [49] &quot;Dates&quot;                                                                    </span></span>
+<span id="cb5-61"><a href="#cb5-61" tabindex="-1"></a><span class="co">#&gt;  [50] &quot;Edible roots and tubers with high starch or inulin content, n.e.c., fresh&quot;</span></span>
+<span id="cb5-62"><a href="#cb5-62" tabindex="-1"></a><span class="co">#&gt;  [51] &quot;Eggplants (aubergines)&quot;                                                   </span></span>
+<span id="cb5-63"><a href="#cb5-63" tabindex="-1"></a><span class="co">#&gt;  [52] &quot;Fibre Crops, Fibre Equivalent&quot;                                            </span></span>
+<span id="cb5-64"><a href="#cb5-64" tabindex="-1"></a><span class="co">#&gt;  [53] &quot;Figs&quot;                                                                     </span></span>
+<span id="cb5-65"><a href="#cb5-65" tabindex="-1"></a><span class="co">#&gt;  [54] &quot;Flax, processed but not spun&quot;                                             </span></span>
+<span id="cb5-66"><a href="#cb5-66" tabindex="-1"></a><span class="co">#&gt;  [55] &quot;Fonio&quot;                                                                    </span></span>
+<span id="cb5-67"><a href="#cb5-67" tabindex="-1"></a><span class="co">#&gt;  [56] &quot;Fruit Primary&quot;                                                            </span></span>
+<span id="cb5-68"><a href="#cb5-68" tabindex="-1"></a><span class="co">#&gt;  [57] &quot;Ginger, raw&quot;                                                              </span></span>
+<span id="cb5-69"><a href="#cb5-69" tabindex="-1"></a><span class="co">#&gt;  [58] &quot;Gooseberries&quot;                                                             </span></span>
+<span id="cb5-70"><a href="#cb5-70" tabindex="-1"></a><span class="co">#&gt;  [59] &quot;Grapes&quot;                                                                   </span></span>
+<span id="cb5-71"><a href="#cb5-71" tabindex="-1"></a><span class="co">#&gt;  [60] &quot;Green corn (maize)&quot;                                                       </span></span>
+<span id="cb5-72"><a href="#cb5-72" tabindex="-1"></a><span class="co">#&gt;  [61] &quot;Green garlic&quot;                                                             </span></span>
+<span id="cb5-73"><a href="#cb5-73" tabindex="-1"></a><span class="co">#&gt;  [62] &quot;Groundnuts, excluding shelled&quot;                                            </span></span>
+<span id="cb5-74"><a href="#cb5-74" tabindex="-1"></a><span class="co">#&gt;  [63] &quot;Hazelnuts, in shell&quot;                                                      </span></span>
+<span id="cb5-75"><a href="#cb5-75" tabindex="-1"></a><span class="co">#&gt;  [64] &quot;Hempseed&quot;                                                                 </span></span>
+<span id="cb5-76"><a href="#cb5-76" tabindex="-1"></a><span class="co">#&gt;  [65] &quot;Hop cones&quot;                                                                </span></span>
+<span id="cb5-77"><a href="#cb5-77" tabindex="-1"></a><span class="co">#&gt;  [66] &quot;Jojoba seeds&quot;                                                             </span></span>
+<span id="cb5-78"><a href="#cb5-78" tabindex="-1"></a><span class="co">#&gt;  [67] &quot;Jute, raw or retted&quot;                                                      </span></span>
+<span id="cb5-79"><a href="#cb5-79" tabindex="-1"></a><span class="co">#&gt;  [68] &quot;Kapok fruit&quot;                                                              </span></span>
+<span id="cb5-80"><a href="#cb5-80" tabindex="-1"></a><span class="co">#&gt;  [69] &quot;Karite nuts (sheanuts)&quot;                                                   </span></span>
+<span id="cb5-81"><a href="#cb5-81" tabindex="-1"></a><span class="co">#&gt;  [70] &quot;Kenaf, and other textile bast fibres, raw or retted&quot;                      </span></span>
+<span id="cb5-82"><a href="#cb5-82" tabindex="-1"></a><span class="co">#&gt;  [71] &quot;Kiwi fruit&quot;                                                               </span></span>
+<span id="cb5-83"><a href="#cb5-83" tabindex="-1"></a><span class="co">#&gt;  [72] &quot;Kola nuts&quot;                                                                </span></span>
+<span id="cb5-84"><a href="#cb5-84" tabindex="-1"></a><span class="co">#&gt;  [73] &quot;Leeks and other alliaceous vegetables&quot;                                    </span></span>
+<span id="cb5-85"><a href="#cb5-85" tabindex="-1"></a><span class="co">#&gt;  [74] &quot;Lemons and limes&quot;                                                         </span></span>
+<span id="cb5-86"><a href="#cb5-86" tabindex="-1"></a><span class="co">#&gt;  [75] &quot;Lentils, dry&quot;                                                             </span></span>
+<span id="cb5-87"><a href="#cb5-87" tabindex="-1"></a><span class="co">#&gt;  [76] &quot;Lettuce and chicory&quot;                                                      </span></span>
+<span id="cb5-88"><a href="#cb5-88" tabindex="-1"></a><span class="co">#&gt;  [77] &quot;Linseed&quot;                                                                  </span></span>
+<span id="cb5-89"><a href="#cb5-89" tabindex="-1"></a><span class="co">#&gt;  [78] &quot;Locust beans (carobs)&quot;                                                    </span></span>
+<span id="cb5-90"><a href="#cb5-90" tabindex="-1"></a><span class="co">#&gt;  [79] &quot;Lupins&quot;                                                                   </span></span>
+<span id="cb5-91"><a href="#cb5-91" tabindex="-1"></a><span class="co">#&gt;  [80] &quot;Maize (corn)&quot;                                                             </span></span>
+<span id="cb5-92"><a href="#cb5-92" tabindex="-1"></a><span class="co">#&gt;  [81] &quot;Mangoes, guavas and mangosteens&quot;                                          </span></span>
+<span id="cb5-93"><a href="#cb5-93" tabindex="-1"></a><span class="co">#&gt;  [82] &quot;Maté leaves&quot;                                                              </span></span>
+<span id="cb5-94"><a href="#cb5-94" tabindex="-1"></a><span class="co">#&gt;  [83] &quot;Melonseed&quot;                                                                </span></span>
+<span id="cb5-95"><a href="#cb5-95" tabindex="-1"></a><span class="co">#&gt;  [84] &quot;Millet&quot;                                                                   </span></span>
+<span id="cb5-96"><a href="#cb5-96" tabindex="-1"></a><span class="co">#&gt;  [85] &quot;Mixed grain&quot;                                                              </span></span>
+<span id="cb5-97"><a href="#cb5-97" tabindex="-1"></a><span class="co">#&gt;  [86] &quot;Mushrooms and truffles&quot;                                                   </span></span>
+<span id="cb5-98"><a href="#cb5-98" tabindex="-1"></a><span class="co">#&gt;  [87] &quot;Mustard seed&quot;                                                             </span></span>
+<span id="cb5-99"><a href="#cb5-99" tabindex="-1"></a><span class="co">#&gt;  [88] &quot;Natural rubber in primary forms&quot;                                          </span></span>
+<span id="cb5-100"><a href="#cb5-100" tabindex="-1"></a><span class="co">#&gt;  [89] &quot;Nutmeg, mace, cardamoms, raw&quot;                                             </span></span>
+<span id="cb5-101"><a href="#cb5-101" tabindex="-1"></a><span class="co">#&gt;  [90] &quot;Oats&quot;                                                                     </span></span>
+<span id="cb5-102"><a href="#cb5-102" tabindex="-1"></a><span class="co">#&gt;  [91] &quot;Oil palm fruit&quot;                                                           </span></span>
+<span id="cb5-103"><a href="#cb5-103" tabindex="-1"></a><span class="co">#&gt;  [92] &quot;Oilcrops, Cake Equivalent&quot;                                                </span></span>
+<span id="cb5-104"><a href="#cb5-104" tabindex="-1"></a><span class="co">#&gt;  [93] &quot;Oilcrops, Oil Equivalent&quot;                                                 </span></span>
+<span id="cb5-105"><a href="#cb5-105" tabindex="-1"></a><span class="co">#&gt;  [94] &quot;Okra&quot;                                                                     </span></span>
+<span id="cb5-106"><a href="#cb5-106" tabindex="-1"></a><span class="co">#&gt;  [95] &quot;Olives&quot;                                                                   </span></span>
+<span id="cb5-107"><a href="#cb5-107" tabindex="-1"></a><span class="co">#&gt;  [96] &quot;Onions and shallots, dry (excluding dehydrated)&quot;                          </span></span>
+<span id="cb5-108"><a href="#cb5-108" tabindex="-1"></a><span class="co">#&gt;  [97] &quot;Onions and shallots, green&quot;                                               </span></span>
+<span id="cb5-109"><a href="#cb5-109" tabindex="-1"></a><span class="co">#&gt;  [98] &quot;Oranges&quot;                                                                  </span></span>
+<span id="cb5-110"><a href="#cb5-110" tabindex="-1"></a><span class="co">#&gt;  [99] &quot;Other beans, green&quot;                                                       </span></span>
+<span id="cb5-111"><a href="#cb5-111" tabindex="-1"></a><span class="co">#&gt; [100] &quot;Other berries and fruits of the genus vaccinium n.e.c.&quot;                   </span></span>
+<span id="cb5-112"><a href="#cb5-112" tabindex="-1"></a><span class="co">#&gt; [101] &quot;Other citrus fruit, n.e.c.&quot;                                               </span></span>
+<span id="cb5-113"><a href="#cb5-113" tabindex="-1"></a><span class="co">#&gt; [102] &quot;Other fibre crops, raw, n.e.c.&quot;                                           </span></span>
+<span id="cb5-114"><a href="#cb5-114" tabindex="-1"></a><span class="co">#&gt; [103] &quot;Other fruits, n.e.c.&quot;                                                     </span></span>
+<span id="cb5-115"><a href="#cb5-115" tabindex="-1"></a><span class="co">#&gt; [104] &quot;Other nuts (excluding wild edible nuts and groundnuts), in shell, n.e.c.&quot; </span></span>
+<span id="cb5-116"><a href="#cb5-116" tabindex="-1"></a><span class="co">#&gt; [105] &quot;Other oil seeds, n.e.c.&quot;                                                  </span></span>
+<span id="cb5-117"><a href="#cb5-117" tabindex="-1"></a><span class="co">#&gt; [106] &quot;Other pome fruits&quot;                                                        </span></span>
+<span id="cb5-118"><a href="#cb5-118" tabindex="-1"></a><span class="co">#&gt; [107] &quot;Other pulses n.e.c.&quot;                                                      </span></span>
+<span id="cb5-119"><a href="#cb5-119" tabindex="-1"></a><span class="co">#&gt; [108] &quot;Other stimulant, spice and aromatic crops, n.e.c.&quot;                        </span></span>
+<span id="cb5-120"><a href="#cb5-120" tabindex="-1"></a><span class="co">#&gt; [109] &quot;Other stone fruits&quot;                                                       </span></span>
+<span id="cb5-121"><a href="#cb5-121" tabindex="-1"></a><span class="co">#&gt; [110] &quot;Other sugar crops n.e.c.&quot;                                                 </span></span>
+<span id="cb5-122"><a href="#cb5-122" tabindex="-1"></a><span class="co">#&gt; [111] &quot;Other tropical fruits, n.e.c.&quot;                                            </span></span>
+<span id="cb5-123"><a href="#cb5-123" tabindex="-1"></a><span class="co">#&gt; [112] &quot;Other vegetables, fresh n.e.c.&quot;                                           </span></span>
+<span id="cb5-124"><a href="#cb5-124" tabindex="-1"></a><span class="co">#&gt; [113] &quot;Papayas&quot;                                                                  </span></span>
+<span id="cb5-125"><a href="#cb5-125" tabindex="-1"></a><span class="co">#&gt; [114] &quot;Peaches and nectarines&quot;                                                   </span></span>
+<span id="cb5-126"><a href="#cb5-126" tabindex="-1"></a><span class="co">#&gt; [115] &quot;Pears&quot;                                                                    </span></span>
+<span id="cb5-127"><a href="#cb5-127" tabindex="-1"></a><span class="co">#&gt; [116] &quot;Peas, dry&quot;                                                                </span></span>
+<span id="cb5-128"><a href="#cb5-128" tabindex="-1"></a><span class="co">#&gt; [117] &quot;Peas, green&quot;                                                              </span></span>
+<span id="cb5-129"><a href="#cb5-129" tabindex="-1"></a><span class="co">#&gt; [118] &quot;Pepper (Piper spp.), raw&quot;                                                 </span></span>
+<span id="cb5-130"><a href="#cb5-130" tabindex="-1"></a><span class="co">#&gt; [119] &quot;Peppermint, spearmint&quot;                                                    </span></span>
+<span id="cb5-131"><a href="#cb5-131" tabindex="-1"></a><span class="co">#&gt; [120] &quot;Persimmons&quot;                                                               </span></span>
+<span id="cb5-132"><a href="#cb5-132" tabindex="-1"></a><span class="co">#&gt; [121] &quot;Pigeon peas, dry&quot;                                                         </span></span>
+<span id="cb5-133"><a href="#cb5-133" tabindex="-1"></a><span class="co">#&gt; [122] &quot;Pineapples&quot;                                                               </span></span>
+<span id="cb5-134"><a href="#cb5-134" tabindex="-1"></a><span class="co">#&gt; [123] &quot;Pistachios, in shell&quot;                                                     </span></span>
+<span id="cb5-135"><a href="#cb5-135" tabindex="-1"></a><span class="co">#&gt; [124] &quot;Plantains and cooking bananas&quot;                                            </span></span>
+<span id="cb5-136"><a href="#cb5-136" tabindex="-1"></a><span class="co">#&gt; [125] &quot;Plums and sloes&quot;                                                          </span></span>
+<span id="cb5-137"><a href="#cb5-137" tabindex="-1"></a><span class="co">#&gt; [126] &quot;Pomelos and grapefruits&quot;                                                  </span></span>
+<span id="cb5-138"><a href="#cb5-138" tabindex="-1"></a><span class="co">#&gt; [127] &quot;Poppy seed&quot;                                                               </span></span>
+<span id="cb5-139"><a href="#cb5-139" tabindex="-1"></a><span class="co">#&gt; [128] &quot;Potatoes&quot;                                                                 </span></span>
+<span id="cb5-140"><a href="#cb5-140" tabindex="-1"></a><span class="co">#&gt; [129] &quot;Pulses, Total&quot;                                                            </span></span>
+<span id="cb5-141"><a href="#cb5-141" tabindex="-1"></a><span class="co">#&gt; [130] &quot;Pumpkins, squash and gourds&quot;                                              </span></span>
+<span id="cb5-142"><a href="#cb5-142" tabindex="-1"></a><span class="co">#&gt; [131] &quot;Pyrethrum, dried flowers&quot;                                                 </span></span>
+<span id="cb5-143"><a href="#cb5-143" tabindex="-1"></a><span class="co">#&gt; [132] &quot;Quinces&quot;                                                                  </span></span>
+<span id="cb5-144"><a href="#cb5-144" tabindex="-1"></a><span class="co">#&gt; [133] &quot;Quinoa&quot;                                                                   </span></span>
+<span id="cb5-145"><a href="#cb5-145" tabindex="-1"></a><span class="co">#&gt; [134] &quot;Ramie, raw or retted&quot;                                                     </span></span>
+<span id="cb5-146"><a href="#cb5-146" tabindex="-1"></a><span class="co">#&gt; [135] &quot;Rape or colza seed&quot;                                                       </span></span>
+<span id="cb5-147"><a href="#cb5-147" tabindex="-1"></a><span class="co">#&gt; [136] &quot;Raspberries&quot;                                                              </span></span>
+<span id="cb5-148"><a href="#cb5-148" tabindex="-1"></a><span class="co">#&gt; [137] &quot;Rice&quot;                                                                     </span></span>
+<span id="cb5-149"><a href="#cb5-149" tabindex="-1"></a><span class="co">#&gt; [138] &quot;Roots and Tubers, Total&quot;                                                  </span></span>
+<span id="cb5-150"><a href="#cb5-150" tabindex="-1"></a><span class="co">#&gt; [139] &quot;Rye&quot;                                                                      </span></span>
+<span id="cb5-151"><a href="#cb5-151" tabindex="-1"></a><span class="co">#&gt; [140] &quot;Safflower seed&quot;                                                           </span></span>
+<span id="cb5-152"><a href="#cb5-152" tabindex="-1"></a><span class="co">#&gt; [141] &quot;Seed cotton, unginned&quot;                                                    </span></span>
+<span id="cb5-153"><a href="#cb5-153" tabindex="-1"></a><span class="co">#&gt; [142] &quot;Sesame seed&quot;                                                              </span></span>
+<span id="cb5-154"><a href="#cb5-154" tabindex="-1"></a><span class="co">#&gt; [143] &quot;Sisal, raw&quot;                                                               </span></span>
+<span id="cb5-155"><a href="#cb5-155" tabindex="-1"></a><span class="co">#&gt; [144] &quot;Sorghum&quot;                                                                  </span></span>
+<span id="cb5-156"><a href="#cb5-156" tabindex="-1"></a><span class="co">#&gt; [145] &quot;Sour cherries&quot;                                                            </span></span>
+<span id="cb5-157"><a href="#cb5-157" tabindex="-1"></a><span class="co">#&gt; [146] &quot;Soya beans&quot;                                                               </span></span>
+<span id="cb5-158"><a href="#cb5-158" tabindex="-1"></a><span class="co">#&gt; [147] &quot;Spinach&quot;                                                                  </span></span>
+<span id="cb5-159"><a href="#cb5-159" tabindex="-1"></a><span class="co">#&gt; [148] &quot;Strawberries&quot;                                                             </span></span>
+<span id="cb5-160"><a href="#cb5-160" tabindex="-1"></a><span class="co">#&gt; [149] &quot;String beans&quot;                                                             </span></span>
+<span id="cb5-161"><a href="#cb5-161" tabindex="-1"></a><span class="co">#&gt; [150] &quot;Sugar beet&quot;                                                               </span></span>
+<span id="cb5-162"><a href="#cb5-162" tabindex="-1"></a><span class="co">#&gt; [151] &quot;Sugar cane&quot;                                                               </span></span>
+<span id="cb5-163"><a href="#cb5-163" tabindex="-1"></a><span class="co">#&gt; [152] &quot;Sugar Crops Primary&quot;                                                      </span></span>
+<span id="cb5-164"><a href="#cb5-164" tabindex="-1"></a><span class="co">#&gt; [153] &quot;Sunflower seed&quot;                                                           </span></span>
+<span id="cb5-165"><a href="#cb5-165" tabindex="-1"></a><span class="co">#&gt; [154] &quot;Sweet potatoes&quot;                                                           </span></span>
+<span id="cb5-166"><a href="#cb5-166" tabindex="-1"></a><span class="co">#&gt; [155] &quot;Tallowtree seeds&quot;                                                         </span></span>
+<span id="cb5-167"><a href="#cb5-167" tabindex="-1"></a><span class="co">#&gt; [156] &quot;Tangerines, mandarins, clementines&quot;                                       </span></span>
+<span id="cb5-168"><a href="#cb5-168" tabindex="-1"></a><span class="co">#&gt; [157] &quot;Taro&quot;                                                                     </span></span>
+<span id="cb5-169"><a href="#cb5-169" tabindex="-1"></a><span class="co">#&gt; [158] &quot;Tea leaves&quot;                                                               </span></span>
+<span id="cb5-170"><a href="#cb5-170" tabindex="-1"></a><span class="co">#&gt; [159] &quot;Tomatoes&quot;                                                                 </span></span>
+<span id="cb5-171"><a href="#cb5-171" tabindex="-1"></a><span class="co">#&gt; [160] &quot;Treenuts, Total&quot;                                                          </span></span>
+<span id="cb5-172"><a href="#cb5-172" tabindex="-1"></a><span class="co">#&gt; [161] &quot;Triticale&quot;                                                                </span></span>
+<span id="cb5-173"><a href="#cb5-173" tabindex="-1"></a><span class="co">#&gt; [162] &quot;True hemp, raw or retted&quot;                                                 </span></span>
+<span id="cb5-174"><a href="#cb5-174" tabindex="-1"></a><span class="co">#&gt; [163] &quot;Tung nuts&quot;                                                                </span></span>
+<span id="cb5-175"><a href="#cb5-175" tabindex="-1"></a><span class="co">#&gt; [164] &quot;Unmanufactured tobacco&quot;                                                   </span></span>
+<span id="cb5-176"><a href="#cb5-176" tabindex="-1"></a><span class="co">#&gt; [165] &quot;Vanilla, raw&quot;                                                             </span></span>
+<span id="cb5-177"><a href="#cb5-177" tabindex="-1"></a><span class="co">#&gt; [166] &quot;Vegetables Primary&quot;                                                       </span></span>
+<span id="cb5-178"><a href="#cb5-178" tabindex="-1"></a><span class="co">#&gt; [167] &quot;Vetches&quot;                                                                  </span></span>
+<span id="cb5-179"><a href="#cb5-179" tabindex="-1"></a><span class="co">#&gt; [168] &quot;Walnuts, in shell&quot;                                                        </span></span>
+<span id="cb5-180"><a href="#cb5-180" tabindex="-1"></a><span class="co">#&gt; [169] &quot;Watermelons&quot;                                                              </span></span>
+<span id="cb5-181"><a href="#cb5-181" tabindex="-1"></a><span class="co">#&gt; [170] &quot;Wheat&quot;                                                                    </span></span>
+<span id="cb5-182"><a href="#cb5-182" tabindex="-1"></a><span class="co">#&gt; [171] &quot;Yams&quot;                                                                     </span></span>
+<span id="cb5-183"><a href="#cb5-183" tabindex="-1"></a><span class="co">#&gt; [172] &quot;Yautia&quot;</span></span></code></pre></div>
+</div>
+<div id="ứng-dụng-để-vẽ-đồ-thị-nhanh-chóng" class="section level2">
+<h2>Ứng dụng để vẽ đồ thị nhanh chóng</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>coffee_data <span class="ot">&lt;-</span> <span class="fu">filter_faostat</span>(<span class="at">data_rds =</span> df_1,</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>                              <span class="at">data_region =</span> df_2,</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>                              <span class="at">item_filter =</span> <span class="st">&quot;Coffee, green&quot;</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>                              <span class="at">rank_filter =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>                              <span class="at">year_filter =</span> <span class="dv">2021</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="do">## vì kết quả trả về ở dạng factor cho danh sách các quốc gia</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="do">## bạn cần reset lại giá trị factor này để reorder lại theo đúng ý bạn muốn</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="do">## giúp việc vẽ đồ thị được thuận lợi.</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>coffee_data<span class="sc">$</span>area <span class="ot">&lt;-</span> <span class="fu">as.character</span>(coffee_data<span class="sc">$</span>area)</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>coffee_data<span class="sc">$</span>area <span class="ot">&lt;-</span> <span class="fu">reorder</span>(coffee_data<span class="sc">$</span>area, coffee_data<span class="sc">$</span>production, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>coffee_data<span class="sc">$</span>production <span class="ot">&lt;-</span> coffee_data<span class="sc">$</span>production <span class="sc">/</span> <span class="dv">1000000</span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a>label <span class="ot">&lt;-</span> coffee_data<span class="sc">$</span>production</span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="fu">names</span>(label) <span class="ot">&lt;-</span> coffee_data<span class="sc">$</span>area</span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="fu">round</span>(label, <span class="at">digits =</span> <span class="dv">3</span>) <span class="ot">-&gt;</span> label</span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">3</span>))</span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a><span class="fu">par</span>(<span class="at">cex =</span> <span class="fl">0.8</span>)</span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a><span class="fu">par</span>(<span class="at">font.axis =</span> <span class="dv">2</span>)</span>
+<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a><span class="fu">par</span>(<span class="at">font.lab =</span> <span class="dv">2</span>)</span>
+<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a></span>
+<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">barplot</span>(production <span class="sc">~</span> area,</span>
+<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a>             coffee_data,</span>
+<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a>             <span class="at">xaxs =</span> <span class="st">&quot;i&quot;</span>,</span>
+<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a>             <span class="at">yaxs =</span> <span class="st">&quot;i&quot;</span>,</span>
+<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a>             <span class="at">las =</span> <span class="dv">1</span>,</span>
+<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a>             <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>),</span>
+<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a>             <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4</span>),</span>
+<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a>             <span class="at">width =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>),</span>
+<span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a>             <span class="at">space =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>),</span>
+<span id="cb6-37"><a href="#cb6-37" tabindex="-1"></a>             <span class="at">beside =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb6-38"><a href="#cb6-38" tabindex="-1"></a>             <span class="at">horiz =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb6-39"><a href="#cb6-39" tabindex="-1"></a>             <span class="at">xlab =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb6-40"><a href="#cb6-40" tabindex="-1"></a>             <span class="at">ylab =</span> <span class="st">&quot;Sản lượng (triệu tấn)&quot;</span>,</span>
+<span id="cb6-41"><a href="#cb6-41" tabindex="-1"></a>             <span class="at">col =</span> <span class="fu">terrain.colors</span>(<span class="at">n =</span> <span class="dv">10</span>),</span>
+<span id="cb6-42"><a href="#cb6-42" tabindex="-1"></a>             <span class="at">border =</span> <span class="st">&quot;black&quot;</span>)</span>
+<span id="cb6-43"><a href="#cb6-43" tabindex="-1"></a></span>
+<span id="cb6-44"><a href="#cb6-44" tabindex="-1"></a><span class="fu">text</span>(b, label <span class="sc">+</span> <span class="fl">0.2</span>, label, <span class="at">font =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>)</span>
+<span id="cb6-45"><a href="#cb6-45" tabindex="-1"></a></span>
+<span id="cb6-46"><a href="#cb6-46" tabindex="-1"></a><span class="fu">title</span>(<span class="at">main =</span> <span class="st">&quot;Top 10 quốc gia sản xuất cà phê trên thế giới năm 2021 &quot;</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
