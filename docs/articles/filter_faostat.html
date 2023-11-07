@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="tuhocr">
-<title>Hướng dẫn trích xuất dữ liệu nông sản từ FAOSTAT • tuhocr</title>
+<title>Hướng dẫn trích xuất dữ liệu từ FAOSTAT • tuhocr</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Hướng dẫn trích xuất dữ liệu nông sản từ FAOSTAT">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Hướng dẫn trích xuất dữ liệu từ FAOSTAT">
 <meta property="og:description" content="tuhocr">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -48,7 +48,7 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/filter_faostat.html">Hướng dẫn trích xuất dữ liệu nông sản từ FAOSTAT</a>
+    <a class="dropdown-item" href="../articles/filter_faostat.html">Hướng dẫn trích xuất dữ liệu từ FAOSTAT</a>
   </div>
 </li>
 <li class="nav-item">
@@ -78,8 +78,9 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Hướng dẫn trích xuất dữ liệu nông sản từ FAOSTAT</h1>
-                        <h4 data-toc-skip class="author">Duc Nguyen</h4>
+      <img src="../logo.png" class="logo" alt=""><h1>Hướng dẫn trích xuất dữ liệu từ FAOSTAT</h1>
+                        <h4 data-toc-skip class="author">Duc Nguyen |
+www.tuhocr.com</h4>
             
             <h4 data-toc-skip class="date">2023-11-08</h4>
       
@@ -90,7 +91,7 @@
     
     
 <div class="section level2">
-<h2 id="quy-trình-trích-xuất-dữ-liệu-từ-faostat">Quy trình trích xuất dữ liệu từ FAOSTAT<a class="anchor" aria-label="anchor" href="#quy-tr%C3%ACnh-tr%C3%ADch-xu%E1%BA%A5t-d%E1%BB%AF-li%E1%BB%87u-t%E1%BB%AB-faostat"></a>
+<h2 id="quy-trình-thực-hiện">Quy trình thực hiện<a class="anchor" aria-label="anchor" href="#quy-tr%C3%ACnh-th%E1%BB%B1c-hi%E1%BB%87n"></a>
 </h2>
 <p>Thông thường để trích xuất dữ liệu nông sản từ FAOSTAT, bạn sẽ lên
 trực tiếp trang web <code>https://www.fao.org/faostat/en/</code> và tải
@@ -197,7 +198,7 @@ Trên cơ sở dataset thu được bạn sẽ lọc tiếp ra các thông tin l
 <span>                             input_region <span class="op">=</span> <span class="va">df_2</span>,</span>
 <span>                             input_item <span class="op">=</span> <span class="st">"Soya beans"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">soya_data</span>, n <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">soya_data</span>, n <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                        area       item year production area_harvested yield</span></span>
 <span><span class="co">#&gt; 1  United States of America Soya beans 2021  120707230       34937700  3.45</span></span>
 <span><span class="co">#&gt; 2  United States of America Soya beans 2020  114748940       33428610  3.43</span></span>
@@ -213,7 +214,22 @@ Trên cơ sở dataset thu được bạn sẽ lọc tiếp ra các thông tin l
 <span><span class="co">#&gt; 12 United States of America Soya beans 2010   90663290       31003300  2.92</span></span>
 <span><span class="co">#&gt; 13 United States of America Soya beans 2009   91469550       30906980  2.96</span></span>
 <span><span class="co">#&gt; 14 United States of America Soya beans 2008   80748700       30222650  2.67</span></span>
-<span><span class="co">#&gt; 15 United States of America Soya beans 2007   72859180       25959240  2.81</span></span></code></pre></div>
+<span><span class="co">#&gt; 15 United States of America Soya beans 2007   72859180       25959240  2.81</span></span>
+<span><span class="co">#&gt; 16 United States of America Soya beans 2006   87000620       30190680  2.88</span></span>
+<span><span class="co">#&gt; 17 United States of America Soya beans 2005   83506580       28834570  2.90</span></span>
+<span><span class="co">#&gt; 18 United States of America Soya beans 2004   85015630       29930060  2.84</span></span>
+<span><span class="co">#&gt; 19 United States of America Soya beans 2003   66782720       29330310  2.28</span></span>
+<span><span class="co">#&gt; 20 United States of America Soya beans 2002   75010030       29338810  2.56</span></span>
+<span><span class="co">#&gt; 21 United States of America Soya beans 2001   78671470       29532250  2.66</span></span>
+<span><span class="co">#&gt; 22 United States of America Soya beans 2000   75055290       29302790  2.56</span></span>
+<span><span class="co">#&gt; 23 United States of America Soya beans 1999   72223460       29318170  2.46</span></span>
+<span><span class="co">#&gt; 24 United States of America Soya beans 1998   74598180       28506770  2.62</span></span>
+<span><span class="co">#&gt; 25 United States of America Soya beans 1997   73175780       27968130  2.62</span></span>
+<span><span class="co">#&gt; 26 United States of America Soya beans 1996   64780440       25636710  2.53</span></span>
+<span><span class="co">#&gt; 27 United States of America Soya beans 1995   59173500       24906240  2.38</span></span>
+<span><span class="co">#&gt; 28 United States of America Soya beans 1994   68443520       24608790  2.78</span></span>
+<span><span class="co">#&gt; 29 United States of America Soya beans 1993   50885390       23191570  2.19</span></span>
+<span><span class="co">#&gt; 30 United States of America Soya beans 1992   59611670       23566310  2.53</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="danh-sách-cây-trồng">Danh sách cây trồng<a class="anchor" aria-label="anchor" href="#danh-s%C3%A1ch-c%C3%A2y-tr%E1%BB%93ng"></a>
@@ -412,6 +428,7 @@ cần trích xuất loại cây trồng cụ thể.</p>
 <div class="section level2">
 <h2 id="ứng-dụng-để-vẽ-đồ-thị-nhanh-chóng">Ứng dụng để vẽ đồ thị nhanh chóng<a class="anchor" aria-label="anchor" href="#%E1%BB%A9ng-d%E1%BB%A5ng-%C4%91%E1%BB%83-v%E1%BA%BD-%C4%91%E1%BB%93-th%E1%BB%8B-nhanh-ch%C3%B3ng"></a>
 </h2>
+<p><strong>Vẽ đồ thị cột</strong></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">coffee_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_faostat.html">filter_faostat</a></span><span class="op">(</span>data_rds <span class="op">=</span> <span class="va">df_1</span>,</span>
 <span>                              data_region <span class="op">=</span> <span class="va">df_2</span>,</span>
@@ -460,6 +477,75 @@ cần trích xuất loại cây trồng cụ thể.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Top 10 quốc gia sản xuất cà phê trên thế giới năm 2021 "</span><span class="op">)</span></span></code></pre></div>
 <p><img src="filter_faostat_files/figure-html/unnamed-chunk-6-1.png" width="864"></p>
+<p><strong>Vẽ đồ thị đường</strong></p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rice_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extract_faostat.html">extract_faostat</a></span><span class="op">(</span>input_rds <span class="op">=</span> <span class="va">df_1</span>,</span>
+<span>                             input_region <span class="op">=</span> <span class="va">df_2</span>,</span>
+<span>                             input_item <span class="op">=</span> <span class="st">"Rice"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">rice_data</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">area</span> <span class="op">==</span> <span class="st">"Viet Nam"</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">rice_vietnam</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">rice_vietnam</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         area item year production area_harvested yield</span></span>
+<span><span class="co">#&gt; 306 Viet Nam Rice 2021   43852729        7219797  6.07</span></span>
+<span><span class="co">#&gt; 307 Viet Nam Rice 2020   42765000        7222403  5.92</span></span>
+<span><span class="co">#&gt; 308 Viet Nam Rice 2019   43495488        7451544  5.84</span></span>
+<span><span class="co">#&gt; 309 Viet Nam Rice 2018   44046250        7570741  5.82</span></span>
+<span><span class="co">#&gt; 310 Viet Nam Rice 2017   42763682        7708534  5.55</span></span>
+<span><span class="co">#&gt; 311 Viet Nam Rice 2016   43112010        7734722  5.57</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">rice_vietnam</span>, mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">production</span> <span class="op">/</span> <span class="fl">1000000</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"blue"</span>, linewidth <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, </span>
+<span>                     limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1955</span>, <span class="fl">2025</span><span class="op">)</span>, </span>
+<span>                     breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1961</span>, <span class="fl">1970</span>, <span class="fl">1980</span>, <span class="fl">1990</span>, <span class="fl">2000</span>, <span class="fl">2010</span>, <span class="fl">2021</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, </span>
+<span>                     limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">50</span><span class="op">)</span>, </span>
+<span>                     breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span>, <span class="fl">40</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Năm"</span>, </span>
+<span>         y <span class="op">=</span> <span class="st">"Sản lượng (triệu tấn)"</span>, </span>
+<span>         title <span class="op">=</span> <span class="st">"Tình hình sản xuất lúa gạo ở Việt Nam giai đoạn 1961–2021"</span>,</span>
+<span>         subtitle <span class="op">=</span> <span class="st">"Nguồn: FAOSTAT"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_classic</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="filter_faostat_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
+<p><strong>Vẽ đồ thị cột và đường</strong></p>
+<p>Dữ liệu gạo được trích xuất theo function
+<code><a href="../reference/extract_faostat.html">extract_faostat()</a></code> cho toàn bộ các quốc gia trên thế giới,
+sau đó lọc theo các quốc gia khu vực Đông Nam Á. <a href="https://www.tuhocr.com/blog/huong-dan-ve-do-thi-hai-truc-tung-bang-package-lattice" class="external-link">Hướng
+dẫn cách vẽ bằng package <code>lattice</code></a></p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="st">"rice_sea.png"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="rice_sea.png" width="100%"></p>
+<p><strong>Vẽ đồ thị hộp</strong></p>
+<p>Dữ liệu cà phê được trích xuất theo function
+<code><a href="../reference/filter_faostat.html">filter_faostat()</a></code> cho các năm từ 2000 đến 2021 ở các quốc
+gia thứ hạng từ 1 đến 10. <a href="https://www.tuhocr.com/blog/huong-dan-ve-do-thi-boxplot-co-chen-gia-tri-trung-binh" class="external-link">Hướng
+dẫn cách vẽ bằng package <code>ggplot2</code></a></p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="st">"coffee_boxplot.png"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="coffee_boxplot.png" width="100%"></p>
+</div>
+<div class="section level2">
+<h2 id="xây-dựng-function-giúp-lọc-dữ-liệu-từ-các-dataset-khác">Xây dựng function giúp lọc dữ liệu từ các dataset khác?<a class="anchor" aria-label="anchor" href="#x%C3%A2y-d%E1%BB%B1ng-function-gi%C3%BAp-l%E1%BB%8Dc-d%E1%BB%AF-li%E1%BB%87u-t%E1%BB%AB-c%C3%A1c-dataset-kh%C3%A1c"></a>
+</h2>
+<p>Function <code><a href="../reference/extract_faostat.html">extract_faostat()</a></code> và
+<code><a href="../reference/filter_faostat.html">filter_faostat()</a></code> là kết quả từ <a href="https://www.tuhocr.com/r-courses/r-crash-course" class="external-link">chuyên đề 1+: Học
+R Siêu Nhanh Qua Case Study FAOSTAT</a> mình có hướng dẫn rất cụ thể
+cách download dataset, xử lý dữ liệu đầu vào, vẽ đồ thị bằng Base R
+Graphics và bằng package <code>ggplot2</code>. Ở phần bài tập project
+(Section 6: Bài 26 đến 32) được trình bày chi tiết về cách xây dựng 2
+function trên, áp dụng lệnh <code>lapply</code> để loop trên toàn bộ
+dataset cũng như các lưu ý để kiểm tra tính chính xác của function qua
+các tình huống thực tế.</p>
+<p>Như vậy, nếu bạn muốn xây dựng một funtion tương tự để lọc trên các
+dataset khác (ví dụ như WORLD BANK) thì bạn nên học qua chuyên đề 1+ này
+để có nền tảng về workflow xây dựng function và phân tích dữ liệu trong
+R. Từ đây bạn sẽ dễ dàng áp dụng các đoạn code cũng như kinh nghiệm từ
+khóa học để tự tay làm ra các function xử lý dữ liệu theo ý của
+mình.</p>
+<p>Chúc các bạn ứng dụng R có hiệu quả vào công việc.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

@@ -1,10 +1,10 @@
 ---
-title: "Hướng dẫn trích xuất dữ liệu nông sản từ FAOSTAT"
-author: "Duc Nguyen"
+title: "Hướng dẫn trích xuất dữ liệu từ FAOSTAT"
+author: "Duc Nguyen | www.tuhocr.com"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Hướng dẫn trích xuất dữ liệu nông sản từ FAOSTAT}
+  %\VignetteIndexEntry{Hướng dẫn trích xuất dữ liệu từ FAOSTAT}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   %\VignetteDepends{rmarkdown}
@@ -12,12 +12,14 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE,
   collapse = TRUE,
   comment = "#>"
 )
 ```
 
-## Quy trình trích xuất dữ liệu từ FAOSTAT
+## Quy trình thực hiện
 
 Thông thường để trích xuất dữ liệu nông sản từ FAOSTAT, bạn sẽ lên trực tiếp trang web `https://www.fao.org/faostat/en/` và tải về dataset liên quan cũng như sử dụng các công cụ lọc dữ liệu và vẽ đồ thị được cung cấp sẵn trên website.
 
@@ -99,7 +101,7 @@ soya_data <- extract_faostat(input_rds = df_1,
                              input_region = df_2,
                              input_item = "Soya beans")
 
-head(soya_data, n = 15)
+head(soya_data, n = 30)
 ```
 
 ## Danh sách cây trồng
@@ -121,6 +123,8 @@ crop_item
 ```
 
 ## Ứng dụng để vẽ đồ thị nhanh chóng
+
+**Vẽ đồ thị cột**
 
 ```{r, fig.width=9, fig.height=4}
 coffee_data <- filter_faostat(data_rds = df_1,
@@ -171,6 +175,49 @@ text(b, label + 0.2, label, font = 2, col = "black")
 title(main = "Top 10 quốc gia sản xuất cà phê trên thế giới năm 2021 ")
 ```
 
+**Vẽ đồ thị đường**
+
+```{r, fig.width=7, fig.height=4}
+rice_data <- extract_faostat(input_rds = df_1,
+                             input_region = df_2,
+                             input_item = "Rice")
+
+rice_data |> subset(area == "Viet Nam") -> rice_vietnam
+
+head(rice_vietnam)
+
+library(ggplot2)
+
+ggplot(data = rice_vietnam, mapping = aes(x = year, y = production / 1000000)) +
+    geom_line(color = "blue", linewidth = 1.5) +
+    scale_x_continuous(expand = c(0, 0), 
+                     limits = c(1955, 2025), 
+                     breaks = c(1961, 1970, 1980, 1990, 2000, 2010, 2021)) +
+    scale_y_continuous(expand = c(0, 0), 
+                     limits = c(0, 50), 
+                     breaks = c(0, 10, 20, 30, 40, 50)) +
+    labs(x = "Năm", 
+         y = "Sản lượng (triệu tấn)", 
+         title = "Tình hình sản xuất lúa gạo ở Việt Nam giai đoạn 1961–2021",
+         subtitle = "Nguồn: FAOSTAT") + 
+    theme_classic()
+```
+
+**Vẽ đồ thị cột và đường**
+
+Dữ liệu gạo được trích xuất theo function `extract_faostat()` cho toàn bộ các quốc gia trên thế giới, sau đó lọc theo các quốc gia khu vực Đông Nam Á. [Hướng dẫn cách vẽ bằng package `lattice`](https://www.tuhocr.com/blog/huong-dan-ve-do-thi-hai-truc-tung-bang-package-lattice)
+
+```{r, out.width = '100%'}
+knitr::include_graphics("rice_sea.png")
+```
+
+**Vẽ đồ thị hộp**
+
+Dữ liệu cà phê được trích xuất theo function `filter_faostat()` cho các năm từ 2000 đến 2021 ở các quốc gia thứ hạng từ 1 đến 10. [Hướng dẫn cách vẽ bằng package `ggplot2`](https://www.tuhocr.com/blog/huong-dan-ve-do-thi-boxplot-co-chen-gia-tri-trung-binh)
+
+```{r, out.width = '100%'}
+knitr::include_graphics("coffee_boxplot.png")
+```
 
 
 
@@ -181,5 +228,10 @@ title(main = "Top 10 quốc gia sản xuất cà phê trên thế giới năm 20
 
 
 
+## Xây dựng function giúp lọc dữ liệu từ các dataset khác?
 
+Function `extract_faostat()` và `filter_faostat()` là kết quả từ [chuyên đề 1+: Học R Siêu Nhanh Qua Case Study FAOSTAT](https://www.tuhocr.com/r-courses/r-crash-course) mình có hướng dẫn rất cụ thể cách download dataset, xử lý dữ liệu đầu vào, vẽ đồ thị bằng Base R Graphics và bằng package `ggplot2`. Ở phần bài tập project (Section 6: Bài 26 đến 32) được trình bày chi tiết về cách xây dựng 2 function trên, áp dụng lệnh `lapply` để loop trên toàn bộ dataset cũng như các lưu ý để kiểm tra tính chính xác của function qua các tình huống thực tế.
 
+Như vậy, nếu bạn muốn xây dựng một funtion tương tự để lọc trên các dataset khác (ví dụ như WORLD BANK) thì bạn nên học qua chuyên đề 1+ này để có nền tảng về workflow xây dựng function và phân tích dữ liệu trong R. Từ đây bạn sẽ dễ dàng áp dụng các đoạn code cũng như kinh nghiệm từ khóa học để tự tay làm ra các function xử lý dữ liệu theo ý của mình.
+
+Chúc các bạn ứng dụng R có hiệu quả vào công việc.

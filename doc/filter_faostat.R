@@ -1,5 +1,7 @@
 ## ---- include = FALSE---------------------------------------------------------
 knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE,
   collapse = TRUE,
   comment = "#>"
 )
@@ -61,7 +63,7 @@ soya_data <- extract_faostat(input_rds = df_1,
                              input_region = df_2,
                              input_item = "Soya beans")
 
-head(soya_data, n = 15)
+head(soya_data, n = 30)
 
 ## -----------------------------------------------------------------------------
 crop_full <- df_1
@@ -123,4 +125,35 @@ b <- barplot(production ~ area,
 text(b, label + 0.2, label, font = 2, col = "black")
 
 title(main = "Top 10 quốc gia sản xuất cà phê trên thế giới năm 2021 ")
+
+## ---- fig.width=7, fig.height=4-----------------------------------------------
+rice_data <- extract_faostat(input_rds = df_1,
+                             input_region = df_2,
+                             input_item = "Rice")
+
+rice_data |> subset(area == "Viet Nam") -> rice_vietnam
+
+head(rice_vietnam)
+
+library(ggplot2)
+
+ggplot(data = rice_vietnam, mapping = aes(x = year, y = production / 1000000)) +
+    geom_line(color = "blue", linewidth = 1.5) +
+    scale_x_continuous(expand = c(0, 0), 
+                     limits = c(1955, 2025), 
+                     breaks = c(1961, 1970, 1980, 1990, 2000, 2010, 2021)) +
+    scale_y_continuous(expand = c(0, 0), 
+                     limits = c(0, 50), 
+                     breaks = c(0, 10, 20, 30, 40, 50)) +
+    labs(x = "Năm", 
+         y = "Sản lượng (triệu tấn)", 
+         title = "Tình hình sản xuất lúa gạo ở Việt Nam giai đoạn 1961–2021",
+         subtitle = "Nguồn: FAOSTAT") + 
+    theme_classic()
+
+## ---- out.width = '100%'------------------------------------------------------
+knitr::include_graphics("rice_sea.png")
+
+## ---- out.width = '100%'------------------------------------------------------
+knitr::include_graphics("coffee_boxplot.png")
 
