@@ -89,6 +89,10 @@ là codename tương ứng của từng bài tập.
 dữ liệu nông sản từ FAOSTAT theo thứ hạng và thời gian. [Hướng dẫn chi
 tiết](https://tuhocr.github.io/articles/filter_faostat.html)
 
+``` r
+# vignette(topic = "filter_faostat", package = "tuhocr")
+```
+
 ## Thông tin package
 
 ### Bản quyền
