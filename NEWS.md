@@ -1,3 +1,7 @@
+# tuhocr 0.1.4
+
+* Sửa function `extract_faostat()` để không loại giá trị `NA`.
+
 # tuhocr 0.1.3
 
 * Tạo function `extract_faostat()` và `filter_faostat()` để trích xuất dữ liệu cây trồng từ FAOSTAT.

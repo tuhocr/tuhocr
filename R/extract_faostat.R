@@ -82,7 +82,7 @@ extract_faostat <- function(input_rds, input_region, input_item){
 
     ## REMOVE MISSING VALUES
 
-    rice_ready <-  stats::na.omit(rice_ready)
+    # rice_ready <-  stats::na.omit(rice_ready)
 
     names(rice_ready)[names(rice_ready) == "value.production"] <- "production"
     names(rice_ready)[names(rice_ready) == "value.area_harvested"] <- "area_harvested"
@@ -99,6 +99,8 @@ extract_faostat <- function(input_rds, input_region, input_item){
     item_ready$yield <- round(item_ready$production / item_ready$area_harvested, digits = 2)
 
     item_ready$yield[is.nan(item_ready$yield)] <- 0
+
+    item_ready$yield[is.na(item_ready$yield)] <- 0
 
     item_ready$yield[is.infinite(item_ready$yield)] <- 0
 

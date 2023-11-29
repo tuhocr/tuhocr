@@ -15,7 +15,7 @@ rank_filter = "all", year_filter = "all")
 }
 
 \description{
-Function này giúp trích xuất dữ liệu nông sản cây trồng từ FAOSTAT theo thứ hạng và thời gian.
+Function này giúp trích xuất dữ liệu nông sản cây trồng từ FAOSTAT theo thứ hạng và thời gian căn cứ theo chỉ tiêu `production`.
 
 Hướng dẫn chi tiết: https://tuhocr.github.io/articles/filter_faostat.html
 

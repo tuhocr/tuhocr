@@ -60,6 +60,8 @@ Khi bạn download package `tuhocr` về máy tính thì mình đã để sẵn 
 
 Trong ví dụ minh họa này mình dùng function `filter_faostat()` để trích xuất ra 10 quốc gia sản xuất cà phê nhiều nhất trên thế giới năm 2021. Tham số `rank_filter` và `year_filter` được thiết kế để lọc dữ liệu theo thứ hạng và theo các mốc thời gian khác nhau tùy vào nhu cầu phân tích dữ liệu.
 
+**Đơn vị `production` là tấn, `area_harvested` là ha, `yield` là tấn/ha.**
+
 ```{r setup}
 # df_1 <- readRDS("crop_production.rds")
 # df_2 <- read.csv("FAOSTAT_data_2023.csv")
@@ -219,16 +221,7 @@ Dữ liệu cà phê được trích xuất theo function `filter_faostat()` cho
 knitr::include_graphics("coffee_boxplot.png")
 ```
 
-
-
-
-
-
-
-
-
-
-## Xây dựng function giúp lọc dữ liệu từ các dataset khác?
+## Xây dựng function lọc dữ liệu từ các dataset khác?
 
 Function `extract_faostat()` và `filter_faostat()` là kết quả từ [chuyên đề 1+: Học R Siêu Nhanh Qua Case Study FAOSTAT](https://www.tuhocr.com/r-courses/r-crash-course) mình có hướng dẫn rất cụ thể cách download dataset, xử lý dữ liệu đầu vào, vẽ đồ thị bằng Base R Graphics và bằng package `ggplot2`. Ở phần bài tập project (Section 6: Bài 26 đến 32) được trình bày chi tiết về cách xây dựng 2 function trên, áp dụng lệnh `lapply` để loop trên toàn bộ dataset cũng như các lưu ý để kiểm tra tính chính xác của function qua các tình huống thực tế.
 

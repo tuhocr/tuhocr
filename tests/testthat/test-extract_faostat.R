@@ -25,9 +25,9 @@ extract_faostat <- function(input_rds, input_region, input_item){
     ## ARRANGE
 
     rice_country <- rice_country |> dplyr::arrange(area,
-                                                   desc(year),
-                                                   desc(element),
-                                                   desc(value)
+                                                    desc(year),
+                                                    desc(element),
+                                                    desc(value)
     )
 
     #### CHECK DATA AND CLEAN ####
@@ -63,10 +63,10 @@ extract_faostat <- function(input_rds, input_region, input_item){
     rice_country_2 <- rice_country_2 |> subset(select = -unit)
 
     rice_ready <- stats::reshape(data = rice_country_2,
-                                 idvar = c("year", "area"),
-                                 v.names = "value",
-                                 timevar = "element",
-                                 direction = "wide")
+                          idvar = c("year", "area"),
+                          v.names = "value",
+                          timevar = "element",
+                          direction = "wide")
 
     ## REMOVE YIELD
 
@@ -82,7 +82,7 @@ extract_faostat <- function(input_rds, input_region, input_item){
 
     ## REMOVE MISSING VALUES
 
-    rice_ready <-  stats::na.omit(rice_ready)
+    # rice_ready <-  stats::na.omit(rice_ready)
 
     names(rice_ready)[names(rice_ready) == "value.production"] <- "production"
     names(rice_ready)[names(rice_ready) == "value.area_harvested"] <- "area_harvested"
@@ -100,15 +100,17 @@ extract_faostat <- function(input_rds, input_region, input_item){
 
     item_ready$yield[is.nan(item_ready$yield)] <- 0
 
+    item_ready$yield[is.na(item_ready$yield)] <- 0
+
     item_ready$yield[is.infinite(item_ready$yield)] <- 0
 
     item_ready$area <- stats::reorder(item_ready$area, item_ready$production)
 
     item_ready <- item_ready |> dplyr::arrange(desc(area),
-                                               desc(year),
-                                               desc(production),
-                                               desc(area_harvested),
-                                               desc(yield))
+                                                desc(year),
+                                                desc(production),
+                                                desc(area_harvested),
+                                                desc(yield))
 
     return(item_ready)
 

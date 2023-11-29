@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tuhocr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,7 +82,7 @@
                         <h4 data-toc-skip class="author">Duc Nguyen |
 www.tuhocr.com</h4>
             
-            <h4 data-toc-skip class="date">2023-11-08</h4>
+            <h4 data-toc-skip class="date">2023-11-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tuhocr/tuhocr/blob/HEAD/vignettes/filter_faostat.Rmd" class="external-link"><code>vignettes/filter_faostat.Rmd</code></a></small>
       <div class="d-none name"><code>filter_faostat.Rmd</code></div>
@@ -137,6 +137,9 @@ phê nhiều nhất trên thế giới năm 2021. Tham số <code>rank_filter</c
 và <code>year_filter</code> được thiết kế để lọc dữ liệu theo thứ hạng
 và theo các mốc thời gian khác nhau tùy vào nhu cầu phân tích dữ
 liệu.</p>
+<p><strong>Đơn vị <code>production</code> là tấn,
+<code>area_harvested</code> là ha, <code>yield</code> là
+tấn/ha.</strong></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># df_1 &lt;- readRDS("crop_production.rds")</span></span>
 <span><span class="co"># df_2 &lt;- read.csv("FAOSTAT_data_2023.csv")</span></span>
@@ -200,36 +203,36 @@ Trên cơ sở dataset thu được bạn sẽ lọc tiếp ra các thông tin l
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">soya_data</span>, n <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                        area       item year production area_harvested yield</span></span>
-<span><span class="co">#&gt; 1  United States of America Soya beans 2021  120707230       34937700  3.45</span></span>
-<span><span class="co">#&gt; 2  United States of America Soya beans 2020  114748940       33428610  3.43</span></span>
-<span><span class="co">#&gt; 3  United States of America Soya beans 2019   96667090       30327060  3.19</span></span>
-<span><span class="co">#&gt; 4  United States of America Soya beans 2018  120514490       35448420  3.40</span></span>
-<span><span class="co">#&gt; 5  United States of America Soya beans 2017  120064970       36236750  3.31</span></span>
-<span><span class="co">#&gt; 6  United States of America Soya beans 2016  116931500       33470290  3.49</span></span>
-<span><span class="co">#&gt; 7  United States of America Soya beans 2015  106953940       33123470  3.23</span></span>
-<span><span class="co">#&gt; 8  United States of America Soya beans 2014  106877870       33423750  3.20</span></span>
-<span><span class="co">#&gt; 9  United States of America Soya beans 2013   91389350       30858830  2.96</span></span>
-<span><span class="co">#&gt; 10 United States of America Soya beans 2012   82790870       30814720  2.69</span></span>
-<span><span class="co">#&gt; 11 United States of America Soya beans 2011   84291400       29856410  2.82</span></span>
-<span><span class="co">#&gt; 12 United States of America Soya beans 2010   90663290       31003300  2.92</span></span>
-<span><span class="co">#&gt; 13 United States of America Soya beans 2009   91469550       30906980  2.96</span></span>
-<span><span class="co">#&gt; 14 United States of America Soya beans 2008   80748700       30222650  2.67</span></span>
-<span><span class="co">#&gt; 15 United States of America Soya beans 2007   72859180       25959240  2.81</span></span>
-<span><span class="co">#&gt; 16 United States of America Soya beans 2006   87000620       30190680  2.88</span></span>
-<span><span class="co">#&gt; 17 United States of America Soya beans 2005   83506580       28834570  2.90</span></span>
-<span><span class="co">#&gt; 18 United States of America Soya beans 2004   85015630       29930060  2.84</span></span>
-<span><span class="co">#&gt; 19 United States of America Soya beans 2003   66782720       29330310  2.28</span></span>
-<span><span class="co">#&gt; 20 United States of America Soya beans 2002   75010030       29338810  2.56</span></span>
-<span><span class="co">#&gt; 21 United States of America Soya beans 2001   78671470       29532250  2.66</span></span>
-<span><span class="co">#&gt; 22 United States of America Soya beans 2000   75055290       29302790  2.56</span></span>
-<span><span class="co">#&gt; 23 United States of America Soya beans 1999   72223460       29318170  2.46</span></span>
-<span><span class="co">#&gt; 24 United States of America Soya beans 1998   74598180       28506770  2.62</span></span>
-<span><span class="co">#&gt; 25 United States of America Soya beans 1997   73175780       27968130  2.62</span></span>
-<span><span class="co">#&gt; 26 United States of America Soya beans 1996   64780440       25636710  2.53</span></span>
-<span><span class="co">#&gt; 27 United States of America Soya beans 1995   59173500       24906240  2.38</span></span>
-<span><span class="co">#&gt; 28 United States of America Soya beans 1994   68443520       24608790  2.78</span></span>
-<span><span class="co">#&gt; 29 United States of America Soya beans 1993   50885390       23191570  2.19</span></span>
-<span><span class="co">#&gt; 30 United States of America Soya beans 1992   59611670       23566310  2.53</span></span></code></pre></div>
+<span><span class="co">#&gt; 1               Netherlands Soya beans 2019         NA            480  0.00</span></span>
+<span><span class="co">#&gt; 2               Netherlands Soya beans 2018         NA            540  0.00</span></span>
+<span><span class="co">#&gt; 3               Netherlands Soya beans 2017          0              0  0.00</span></span>
+<span><span class="co">#&gt; 4               Netherlands Soya beans 2016          0              0  0.00</span></span>
+<span><span class="co">#&gt; 5               Netherlands Soya beans 2015          0              0  0.00</span></span>
+<span><span class="co">#&gt; 6               Netherlands Soya beans 2014          0              0  0.00</span></span>
+<span><span class="co">#&gt; 7               Netherlands Soya beans 2013          0              0  0.00</span></span>
+<span><span class="co">#&gt; 8               Netherlands Soya beans 2012          0              0  0.00</span></span>
+<span><span class="co">#&gt; 9               Netherlands Soya beans 2011          0              0  0.00</span></span>
+<span><span class="co">#&gt; 10              Netherlands Soya beans 2010          0              0  0.00</span></span>
+<span><span class="co">#&gt; 11              Netherlands Soya beans 2009          0              0  0.00</span></span>
+<span><span class="co">#&gt; 12              Netherlands Soya beans 2008          0              0  0.00</span></span>
+<span><span class="co">#&gt; 13              Netherlands Soya beans 2007          0              0  0.00</span></span>
+<span><span class="co">#&gt; 14              Netherlands Soya beans 2006          0              0  0.00</span></span>
+<span><span class="co">#&gt; 15              Netherlands Soya beans 2005          0              0  0.00</span></span>
+<span><span class="co">#&gt; 16              Netherlands Soya beans 2004          0              0  0.00</span></span>
+<span><span class="co">#&gt; 17              Netherlands Soya beans 2003          0              0  0.00</span></span>
+<span><span class="co">#&gt; 18              Netherlands Soya beans 2002          0              0  0.00</span></span>
+<span><span class="co">#&gt; 19              Netherlands Soya beans 2001          0              0  0.00</span></span>
+<span><span class="co">#&gt; 20              Netherlands Soya beans 2000          0              0  0.00</span></span>
+<span><span class="co">#&gt; 21              Netherlands Soya beans 1999          0              0  0.00</span></span>
+<span><span class="co">#&gt; 22              Netherlands Soya beans 1998          0              0  0.00</span></span>
+<span><span class="co">#&gt; 23              Netherlands Soya beans 1997          0              0  0.00</span></span>
+<span><span class="co">#&gt; 24              Netherlands Soya beans 1996          0              0  0.00</span></span>
+<span><span class="co">#&gt; 25              Netherlands Soya beans 1995          0              0  0.00</span></span>
+<span><span class="co">#&gt; 26              Netherlands Soya beans 1994          0              0  0.00</span></span>
+<span><span class="co">#&gt; 27              Netherlands Soya beans 1993          0              0  0.00</span></span>
+<span><span class="co">#&gt; 28              Netherlands Soya beans 1992          0              0  0.00</span></span>
+<span><span class="co">#&gt; 29              Netherlands Soya beans 1991          0              0  0.00</span></span>
+<span><span class="co">#&gt; 30 United States of America Soya beans 2021  120707230       34937700  3.45</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="danh-sách-cây-trồng">Danh sách cây trồng<a class="anchor" aria-label="anchor" href="#danh-s%C3%A1ch-c%C3%A2y-tr%E1%BB%93ng"></a>
@@ -528,7 +531,7 @@ dẫn cách vẽ bằng package <code>ggplot2</code></a></p>
 <p><img src="coffee_boxplot.png" width="100%"></p>
 </div>
 <div class="section level2">
-<h2 id="xây-dựng-function-giúp-lọc-dữ-liệu-từ-các-dataset-khác">Xây dựng function giúp lọc dữ liệu từ các dataset khác?<a class="anchor" aria-label="anchor" href="#x%C3%A2y-d%E1%BB%B1ng-function-gi%C3%BAp-l%E1%BB%8Dc-d%E1%BB%AF-li%E1%BB%87u-t%E1%BB%AB-c%C3%A1c-dataset-kh%C3%A1c"></a>
+<h2 id="xây-dựng-function-lọc-dữ-liệu-từ-các-dataset-khác">Xây dựng function lọc dữ liệu từ các dataset khác?<a class="anchor" aria-label="anchor" href="#x%C3%A2y-d%E1%BB%B1ng-function-l%E1%BB%8Dc-d%E1%BB%AF-li%E1%BB%87u-t%E1%BB%AB-c%C3%A1c-dataset-kh%C3%A1c"></a>
 </h2>
 <p>Function <code><a href="../reference/extract_faostat.html">extract_faostat()</a></code> và
 <code><a href="../reference/filter_faostat.html">filter_faostat()</a></code> là kết quả từ <a href="https://www.tuhocr.com/r-courses/r-crash-course" class="external-link">chuyên đề 1+: Học
