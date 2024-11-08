@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   message = FALSE, 
   warning = FALSE,
@@ -78,7 +78,7 @@ ok_2[!is.na(ok_2$Freq.area_harvested) & !is.na(ok_2$Freq.production), ] -> ok_3
 as.character(ok_3$Var1) -> crop_item
 crop_item
 
-## ---- fig.width=9, fig.height=4-----------------------------------------------
+## ----fig.width=9, fig.height=4------------------------------------------------
 coffee_data <- filter_faostat(data_rds = df_1,
                               data_region = df_2,
                               item_filter = "Coffee, green",
@@ -126,7 +126,7 @@ text(b, label + 0.2, label, font = 2, col = "black")
 
 title(main = "Top 10 quốc gia sản xuất cà phê trên thế giới năm 2021 ")
 
-## ---- fig.width=7, fig.height=4-----------------------------------------------
+## ----fig.width=7, fig.height=4------------------------------------------------
 rice_data <- extract_faostat(input_rds = df_1,
                              input_region = df_2,
                              input_item = "Rice")
@@ -151,9 +151,9 @@ ggplot(data = rice_vietnam, mapping = aes(x = year, y = production / 1000000)) +
          subtitle = "Nguồn: FAOSTAT") + 
     theme_classic()
 
-## ---- out.width = '100%'------------------------------------------------------
+## ----out.width = '100%'-------------------------------------------------------
 knitr::include_graphics("rice_sea.png")
 
-## ---- out.width = '100%'------------------------------------------------------
+## ----out.width = '100%'-------------------------------------------------------
 knitr::include_graphics("coffee_boxplot.png")
 

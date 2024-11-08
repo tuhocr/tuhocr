@@ -1,7 +1,7 @@
 Package: tuhocr
 Type: Package
 Title: Functions for daily tasks 
-Version: 0.1.4
+Version: 0.1.5
 Authors@R: person("Duc", "Nguyen", , "tuhocr.com@gmail.com.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-0329-9082"))
 Maintainer: Duc Nguyen <tuhocr.com@gmail.com>
@@ -14,6 +14,10 @@ Encoding: UTF-8
 LazyData: true
 Suggests: 
     knitr,
+    shiny, 
+    shinyFiles, 
+    googledrive, 
+    sodium,
     rmarkdown,
     ggplot2,
     testthat (>= 3.0.0)

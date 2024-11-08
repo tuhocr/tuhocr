@@ -1,42 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/articles/filter_faostat.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/clean_spss.html</loc>
-  </url>
-  <url>
-    <loc>/reference/clean_stata.html</loc>
-  </url>
-  <url>
-    <loc>/reference/extract_faostat.html</loc>
-  </url>
-  <url>
-    <loc>/reference/filter_faostat.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tuhocr-package.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/articles/filter_faostat.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/LICENSE.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/archive.html</loc></url>
+<url><loc>/reference/clean_spss.html</loc></url>
+<url><loc>/reference/clean_stata.html</loc></url>
+<url><loc>/reference/extract_faostat.html</loc></url>
+<url><loc>/reference/filter_faostat.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/tuhocr-package.html</loc></url>
 </urlset>
+
